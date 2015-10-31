@@ -6,6 +6,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class StripPackingUI extends Application {
+
+    public static Group root;
+    public static final int resX = 300;
+    public static final int resY = 250;
+
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -13,18 +18,26 @@ public class StripPackingUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("");
-        Group root = new Group();
-        Scene scene = new Scene(root, 300, 250, Color.WHITE);
+        root = new Group();
+        Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
+        drawRectangle(0,0,200,100);
 
-        Rectangle r = new Rectangle();
-        r.setX(50);
-        r.setY(50);
-        r.setWidth(200);
-        r.setHeight(100);
-        
-        root.getChildren().add(r); 
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void drawRectangle(int x1,int y1, int x2, int y2) {
+        Rectangle r = new Rectangle();
+        int temp = y2;
+        y2 = resY-y1;
+        y1 = resY-temp;
+
+        r.setX(x1);
+        r.setY(y1);
+        r.setWidth(x2-x1);
+        r.setHeight(y2-y1);
+        
+        root.getChildren().add(r); 
     }
 }
