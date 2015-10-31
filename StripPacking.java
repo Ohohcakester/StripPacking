@@ -9,7 +9,10 @@ public class StripPacking {
     public StripPacking(FloatingRect[] floatingRects) {
         this.floatingRects = floatingRects;
         this.rects = new Rect[floatingRects.length];
+        height = -1;
+    }
 
+    public void execute() {
         float h = 0;
         for (int i=0;i<floatingRects.length; ++i) {
             rects[i] = floatingRects[i].place(0,h);
@@ -18,11 +21,11 @@ public class StripPacking {
         height = computeHeight();
     }
 
-    public boolean floatEquals(float a, float b) {
+    protected boolean floatEquals(float a, float b) {
         return Math.abs(a-b) < 0.000001f;
     }
 
-    public float computeHeight() {
+    protected float computeHeight() {
         float maxHeight = 0;
         for (int i=0;i<rects.length;++i) {
             if (rects[i].y2 > maxHeight) maxHeight = rects[i].y2;

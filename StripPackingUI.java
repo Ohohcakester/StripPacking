@@ -27,6 +27,17 @@ public class StripPackingUI extends Application {
             FloatingRect.create(0.1,0.4)
         };
     }
+
+    public static FloatingRect[] readStdinTestCase() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        float w = sc.nextFloat();
+        FloatingRect[] rects = new FloatingRect[n];
+        for (int i=0;i<n;++i) {
+            rects[i] = FloatingRect.create(sc.nextFloat()/w,sc.nextFloat()/w);
+        }
+        return rects;
+    }
     
     @Override
     public void start(Stage primaryStage) {
@@ -34,8 +45,10 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        StripPacking sp = new StripPacking(getTestCase());
+        StripPacking sp = new StripPacking(readStdinTestCase());
+        sp.execute();
         if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
+        System.out.println("Height: " + sp.height);
         redraw(sp.rects, 1, sp.height);
 
         primaryStage.setScene(scene);
