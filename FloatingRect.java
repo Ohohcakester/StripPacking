@@ -7,6 +7,10 @@ public class FloatingRect {
         this.height = height;
     }
 
+    public static FloatingRect create(double width, double height) {
+        return new FloatingRect((float)width, (float)height);
+    }
+
     public Rect place(float x, float y) {
         return Rect.place(x,y,width,height);
     }

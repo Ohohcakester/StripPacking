@@ -11,13 +11,21 @@ public class StripPackingUI extends Application {
     public static Group root;
     public static final int resX = 800;
     public static final int resY = 600;
-    public static int realHeight = 800;
-    public static int realWidth = 600;
 
     private ArrayList<Rectangle> existingRectangles = new ArrayList<>();
 
     public static void main(String[] args) {
         Application.launch(args);
+    }
+
+    public static FloatingRect[] getTestCase() {
+        return new FloatingRect[] {
+            FloatingRect.create(0.3,0.5),
+            FloatingRect.create(0.6,0.9),
+            FloatingRect.create(0.6,0.3),
+            FloatingRect.create(0.3,0.1),
+            FloatingRect.create(0.1,0.4)
+        };
     }
     
     @Override
@@ -26,22 +34,19 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        Rect[] rects = new Rect[]{
-            new Rect(0,0,200,200),
-            new Rect(200,0,250,50),
-            new Rect(250,0,800,600)
-        };
-        redraw(rects, 800, 800);
+        StripPacking sp = new StripPacking(getTestCase());
+        if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
+        redraw(sp.rects, 1, sp.height);
 
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public void redraw(Rect[] rects, int width, int height) {
+    public void redraw(Rect[] rects, float width, float height) {
         redraw(Arrays.asList(rects), width, height);
     }
 
-    public void redraw(Iterable<Rect> rects, int width, int height) {
+    public void redraw(Iterable<Rect> rects, float width, float height) {
         clearRectangles();
         float scale = Math.min((float)resX/width, (float)resY/height);
 
