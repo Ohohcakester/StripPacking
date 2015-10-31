@@ -1,8 +1,8 @@
 public class Rect {
-	public float x1;
-	public float y1;
-	public float x2;
-	public float y2;
+	public final float x1;
+	public final float y1;
+	public final float x2;
+	public final float y2;
 	
 	public Rect(float x1, float y1, float x2, float y2) {
 		if (x2<x1 || y2<y1) throw new UnsupportedOperationException("INVALID RECTANGLE");

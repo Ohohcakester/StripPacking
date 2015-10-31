@@ -31,7 +31,7 @@ public class StripPackingUI extends Application {
             new Rect(200,0,250,50),
             new Rect(250,0,800,600)
         };
-        redraw(Arrays.asList(rects), 800, 800);
+        redraw(rects, 800, 800);
 
         primaryStage.setScene(scene);
         primaryStage.show();
