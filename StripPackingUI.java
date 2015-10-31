@@ -45,7 +45,7 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        StripPacking sp = new StripPacking(readStdinTestCase());
+        StripPacking sp = new FirstFitDecreasingHeight(readStdinTestCase());
         sp.execute();
         if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
         System.out.println("Height: " + sp.height);

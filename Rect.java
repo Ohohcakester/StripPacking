@@ -17,6 +17,11 @@ public class Rect {
 	}
 	
 	public boolean overlaps(Rect other) {
-		return !(this.x2 < other.x1 || this.x1 > other.x2 || this.y2 < other.y1 || this.y1 < other.y2);
+		return  this.x2 > other.x1 && this.x1 < other.x2 && this.y2 > other.y1 && this.y1 < other.y2;
+		//if (r) System.out.println(this + " | " + other);
+	}
+
+	public String toString() {
+		return "("+x1+","+y1+","+x2+","+y2+")";
 	}
 }

@@ -2,7 +2,7 @@
 
 public class StripPacking {
     public float height;
-    public FloatingRect[] floatingRects;
+    public final FloatingRect[] floatingRects;
     public Rect[] rects;
     public static final float WIDTH = 1;
 
