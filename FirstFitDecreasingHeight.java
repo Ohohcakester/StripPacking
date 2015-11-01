@@ -19,8 +19,6 @@ public class FirstFitDecreasingHeight extends StripPacking {
         }
     }
 
-    ArrayList<Block> blocks;
-
     public FirstFitDecreasingHeight(FloatingRect[] floatingRects) {
         super(floatingRects);
     }
@@ -41,7 +39,7 @@ public class FirstFitDecreasingHeight extends StripPacking {
         Arrays.sort(frects, decreasingHeight);
         //System.out.println(Arrays.toString(frects));
 
-        blocks = new ArrayList<>();
+        ArrayList<Block> blocks = new ArrayList<>();
         for (int i=0;i<frects.length;++i) {
             boolean placed = false;
             FloatingRect frect = frects[i];
@@ -66,6 +64,6 @@ public class FirstFitDecreasingHeight extends StripPacking {
                 rects[frect.id] = rect;
             }
         }
-        height = computeHeight();
+        this.height = computeHeight();
     }
 }

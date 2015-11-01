@@ -18,7 +18,7 @@ public class StripPacking {
             rects[i] = floatingRects[i].place(0,h);
             h = rects[i].y2;
         }
-        height = computeHeight();
+        this.height = computeHeight();
     }
 
     protected boolean floatEquals(float a, float b) {
@@ -28,7 +28,8 @@ public class StripPacking {
     protected float computeHeight() {
         float maxHeight = 0;
         for (int i=0;i<rects.length;++i) {
-            if (rects[i].y2 > maxHeight) maxHeight = rects[i].y2;
+            if (rects[i] == null) System.out.println("NULL RECT DETECT");
+            else if (rects[i].y2 > maxHeight) maxHeight = rects[i].y2;
         }
         return maxHeight;
     }

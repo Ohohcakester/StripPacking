@@ -45,7 +45,8 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        StripPacking sp = new FirstFitDecreasingHeight(readStdinTestCase());
+        //StripPacking sp = new FirstFitDecreasingHeight(readStdinTestCase());
+        StripPacking sp = new SplitFit(readStdinTestCase());
         sp.execute();
         if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
         System.out.println("Height: " + sp.height);
@@ -67,7 +68,8 @@ public class StripPackingUI extends Application {
         drawRectangle(0,height*scale,resX,resY,1, Color.BLACK);
 
         for (Rect rect : rects) {
-            drawRectangle(rect, scale);
+            if (rect == null) System.out.println("Null Rect Found");
+            else drawRectangle(rect, scale);
         }
     }
 
@@ -101,6 +103,14 @@ public class StripPackingUI extends Application {
     }
 
     public void drawRectangle(Rect rect, float scale) {
-        drawRectangle(rect.x1,rect.y1,rect.x2,rect.y2, scale, Color.GREEN);
+        drawRectangle(rect.x1,rect.y1,rect.x2,rect.y2, scale, Color.DARKGREEN);
+
+        float borderWidth = 0.05f*Math.min(rect.y2-rect.y1, rect.x2-rect.x1);
+        float x1s = rect.x1 + borderWidth;
+        float y1s = rect.y1 + borderWidth;
+        float x2s = rect.x2 - borderWidth;
+        float y2s = rect.y2 - borderWidth;
+
+        drawRectangle(x1s, y1s, x2s, y2s, scale, Color.GREEN);
     }
 }
