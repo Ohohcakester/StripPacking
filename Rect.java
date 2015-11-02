@@ -1,4 +1,5 @@
 public class Rect {
+	private static final float BUFFER = 0.0001f;
 	public final float x1;
 	public final float y1;
 	public final float x2;
@@ -17,7 +18,8 @@ public class Rect {
 	}
 	
 	public boolean overlaps(Rect other) {
-		return  this.x2 > other.x1 && this.x1 < other.x2 && this.y2 > other.y1 && this.y1 < other.y2;
+		return  this.x2 > other.x1+BUFFER && this.x1+BUFFER < other.x2 &&
+				this.y2 > other.y1+BUFFER && this.y1+BUFFER < other.y2;
 		//if (r) System.out.println(this + " | " + other);
 	}
 

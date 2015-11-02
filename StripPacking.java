@@ -22,7 +22,7 @@ public class StripPacking {
     }
 
     protected boolean floatEquals(float a, float b) {
-        return Math.abs(a-b) < 0.000001f;
+        return Math.abs(a-b) < 0.0001f;
     }
 
     protected float computeHeight() {
@@ -35,28 +35,36 @@ public class StripPacking {
     }
 
     public boolean validate() {
-        if (floatingRects.length != rects.length) return false;
+        if (floatingRects.length != rects.length)
+            return error("Lengths = ",floatingRects.length,",",rects.length);
         for (int i=0;i<rects.length; ++i) {
             Rect rect = rects[i];
             FloatingRect frect = floatingRects[i];
-            if (!floatEquals(rect.x2-rect.x1, frect.width)) return false;
-            if (!floatEquals(rect.y2-rect.y1, frect.height)) return false;
+            if (!floatEquals(rect.x2-rect.x1, frect.width)) return error("Mismatch x ",rect," | ",frect);
+            if (!floatEquals(rect.y2-rect.y1, frect.height)) return error("Mismatch y ",rect," | ",frect);
         }
         
         for (int i=0;i<rects.length; ++i) {
-            if (rects[i].x1 < 0) return false;
-            if (rects[i].y1 < 0) return false;
-            if (rects[i].x2 > WIDTH) return false;
+            if (rects[i].x1 < 0) return error("OOB ",rects[i]);
+            if (rects[i].y1 < 0) return error("OOB ",rects[i]);
+            if (rects[i].x2 > WIDTH) return error("OOB ",rects[i]);
         }
 
-        if (height != computeHeight()) return false;
+        if (height != computeHeight()) return error("Wrong Height ",height," | ",computeHeight());
 
         for (int i=0;i<rects.length; ++i) {
             for (int j=i+1;j<rects.length; ++j) {
-                if (rects[i].overlaps(rects[j])) return false;
+                if (rects[i].overlaps(rects[j])) return error("Overlap ",rects[i]," | ",rects[j]);
             }
         }
 
         return true;
+    }
+
+    private boolean error(Object... messages) {
+        String[] strings = new String[messages.length];
+        for (int i=0;i<messages.length;++i) strings[i] = messages[i].toString();
+        System.out.println("ERROR: " + String.join("",strings));
+        return false;
     }
 }
