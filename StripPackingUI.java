@@ -12,31 +12,43 @@ public class StripPackingUI extends Application {
     public static final int resX = 800;
     public static final int resY = 600;
 
+    private static class TestCase {
+        public FloatingRect[] floatingRects;
+        public int width;
+
+        public TestCase(FloatingRect[] floatingRects, int width) {
+            this.floatingRects = floatingRects;
+            this.width = width;
+        }
+    }
+
     private ArrayList<Rectangle> existingRectangles = new ArrayList<>();
 
     public static void main(String[] args) {
         Application.launch(args);
     }
 
-    public static FloatingRect[] getTestCase() {
-        return new FloatingRect[] {
-            FloatingRect.create(0.3,0.5),
-            FloatingRect.create(0.6,0.9),
-            FloatingRect.create(0.6,0.3),
-            FloatingRect.create(0.3,0.1),
-            FloatingRect.create(0.1,0.4)
-        };
+    private static TestCase getTestCase() {
+        return new TestCase(
+            new FloatingRect[] {
+                FloatingRect.create(3,5),
+                FloatingRect.create(6,9),
+                FloatingRect.create(6,3),
+                FloatingRect.create(3,1),
+                FloatingRect.create(1,4)
+            }, 10
+        );
     }
 
-    public static FloatingRect[] readStdinTestCase() {
+    private static TestCase readStdinTestCase() {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        float w = sc.nextFloat();
+        int w = sc.nextInt();
         FloatingRect[] rects = new FloatingRect[n];
         for (int i=0;i<n;++i) {
-            rects[i] = FloatingRect.create(sc.nextFloat()/w,sc.nextFloat()/w);
+            rects[i] = FloatingRect.create(sc.nextInt(),sc.nextInt());
         }
-        return rects;
+        return new TestCase(rects, w);
     }
     
     @Override
@@ -45,22 +57,24 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        //StripPacking sp = new FirstFitDecreasingHeight(readStdinTestCase());
-        StripPacking sp = new SplitFit(readStdinTestCase());
+        TestCase testCase = readStdinTestCase();
+        //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
+        //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
+        StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
         sp.execute();
         if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
         System.out.println("Height: " + sp.height);
-        redraw(sp.rects, 1, sp.height);
+        redraw(sp.rects, sp.width, sp.height);
 
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public void redraw(Rect[] rects, float width, float height) {
+    public void redraw(Rect[] rects, int width, int height) {
         redraw(Arrays.asList(rects), width, height);
     }
 
-    public void redraw(Iterable<Rect> rects, float width, float height) {
+    public void redraw(Iterable<Rect> rects, int width, int height) {
         clearRectangles();
         float scale = Math.min((float)resX/width, (float)resY/height);
 

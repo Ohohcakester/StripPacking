@@ -1,32 +1,34 @@
 
 
 public class StripPacking {
-    public float height;
+    public int height;
     public final FloatingRect[] floatingRects;
     public Rect[] rects;
-    public static final float WIDTH = 1;
+    public final int width;
 
-    public StripPacking(FloatingRect[] floatingRects) {
+    public StripPacking(FloatingRect[] floatingRects, int width) {
+        this.width = width;
         this.floatingRects = floatingRects;
         this.rects = new Rect[floatingRects.length];
-        height = -1;
+        this.height = -1;
     }
 
     public void execute() {
-        float h = 0;
+        int h = 0;
         for (int i=0;i<floatingRects.length; ++i) {
             rects[i] = floatingRects[i].place(0,h);
             h = rects[i].y2;
+            System.out.println(rects[i]);
         }
         this.height = computeHeight();
     }
 
-    protected boolean floatEquals(float a, float b) {
+    protected boolean intEquals(int a, int b) {
         return Math.abs(a-b) < 0.0001f;
     }
 
-    protected float computeHeight() {
-        float maxHeight = 0;
+    protected int computeHeight() {
+        int maxHeight = 0;
         for (int i=0;i<rects.length;++i) {
             if (rects[i] == null) System.out.println("NULL RECT DETECT");
             else if (rects[i].y2 > maxHeight) maxHeight = rects[i].y2;
@@ -40,14 +42,14 @@ public class StripPacking {
         for (int i=0;i<rects.length; ++i) {
             Rect rect = rects[i];
             FloatingRect frect = floatingRects[i];
-            if (!floatEquals(rect.x2-rect.x1, frect.width)) return error("Mismatch x ",rect," | ",frect);
-            if (!floatEquals(rect.y2-rect.y1, frect.height)) return error("Mismatch y ",rect," | ",frect);
+            if (!intEquals(rect.x2-rect.x1, frect.width)) return error("Mismatch x ",rect," | ",frect);
+            if (!intEquals(rect.y2-rect.y1, frect.height)) return error("Mismatch y ",rect," | ",frect);
         }
         
         for (int i=0;i<rects.length; ++i) {
             if (rects[i].x1 < 0) return error("OOB ",rects[i]);
             if (rects[i].y1 < 0) return error("OOB ",rects[i]);
-            if (rects[i].x2 > WIDTH) return error("OOB ",rects[i]);
+            if (rects[i].x2 > width) return error("OOB ",rects[i]);
         }
 
         if (height != computeHeight()) return error("Wrong Height ",height," | ",computeHeight());

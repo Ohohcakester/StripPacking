@@ -8,7 +8,7 @@ public class CaseGen {
 		BufferedWriter fw = new BufferedWriter(new FileWriter("test.txt"));
 		Scanner sc  = new Scanner(System.in);
 		int n = sc.nextInt();
-		float scale = sc.nextFloat();
+		int scale = sc.nextInt();
 		fw.write(n + " " + scale);
 		fw.newLine();
 		for (int i = 0; i < n; i++) {

@@ -1,9 +1,9 @@
 public class FloatingRect {
-    public final float width;
-    public final float height;
+    public final int width;
+    public final int height;
     public int id; // assignable with no consequence
 
-    public FloatingRect(float width, float height) {
+    public FloatingRect(int width, int height) {
         this.width = width;
         this.height = height;
     }
@@ -15,10 +15,10 @@ public class FloatingRect {
     }
 
     public static FloatingRect create(double width, double height) {
-        return new FloatingRect((float)width, (float)height);
+        return new FloatingRect((int)width, (int)height);
     }
 
-    public Rect place(float x, float y) {
+    public Rect place(int x, int y) {
         return Rect.place(x,y,width,height);
     }
 

@@ -4,23 +4,23 @@ import java.util.*;
 public class FirstFitDecreasingHeight extends StripPacking {
 
     private class Block {
-        float startX;
-        float bottomY;
-        float topY;
+        int startX;
+        int bottomY;
+        int topY;
 
-        public Block(float startX, float bottomY, float topY) {
+        public Block(int startX, int bottomY, int topY) {
             this.startX = startX;
             this.bottomY = bottomY;
             this.topY = topY;
         }
 
-        public Block(float bottomY, float height) {
+        public Block(int bottomY, int height) {
             this(0, bottomY, bottomY + height);
         }
     }
 
-    public FirstFitDecreasingHeight(FloatingRect[] floatingRects) {
-        super(floatingRects);
+    public FirstFitDecreasingHeight(FloatingRect[] floatingRects, int width) {
+        super(floatingRects, width);
     }
 
     public Comparator<FloatingRect> decreasingHeight = (fr1,fr2) -> {
@@ -43,11 +43,11 @@ public class FirstFitDecreasingHeight extends StripPacking {
         for (int i=0;i<frects.length;++i) {
             boolean placed = false;
             FloatingRect frect = frects[i];
-            float topBlockY = 0;
+            int topBlockY = 0;
             for (int j=0;j<blocks.size();++j) {
                 Block block = blocks.get(j);
                 topBlockY = block.topY;
-                if (block.startX + frect.width <= WIDTH) {
+                if (block.startX + frect.width <= width) {
                     Rect rect = frect.place(block.startX, block.bottomY);
                     rects[frect.id] = rect;
                     block.startX = rect.x2;
