@@ -2,6 +2,8 @@
 \usepackage{amsmath}
 \usepackage[a4paper]{geometry}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \begin{document}
 
@@ -59,8 +61,26 @@ In other words, if all rectangles have width less than or equal to one third of 
 	SF(L) \leq \frac{3}{2}OPT(L) + 2
 \]
 \section{Implemented algorithms}
-We have implemented FFDH and SF.\\
-\\
+We have implemented the FFDH and SF algorithms with visualisations. The visualisations for our implementations can be seen in Figures \ref{fig:ffdhrun} and \ref{fig:splitfitrun}.\\
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{FFDHrun.png}
+  \caption{FFDH Algorithm}
+  \label{fig:ffdhrun}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{SplitFitrun.png}
+  \caption{Split-Fit Algorithm}
+  \label{fig:splitfitrun}
+\end{subfigure}
+  \caption{Visualisation for our implementation of FFDH and SF}
+  \label{fig:ffdhsfrun}
+\end{figure}
+
 Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\\
 \\
 With the use of FFDH and SF, we can then derive upper and lower bounds for the exhaustive search, from which we hope to create a branch-and-bound algorithm to solve 2-D Strip Packing.
