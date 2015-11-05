@@ -18,5 +18,30 @@ In the Strip Packing problem, we are given an infinitely tall strip, of maximum 
 The task is to pack all of the $n$ rectangles into the strip, so that none of the rectangles overlap, and such that the total height of the strip is minimised.\\
 \\
 
-
+\section{Existing algorithms}
+\paragraph{Level-oriented algorithms} Level-oriented algorithms involve packing items into shelves of certain heights. These algorithms include First-Fit Decreasing Height, and Split-Fit.\\
+\\
+\textit{First-Fit Decreasing Height} (FFDH) places the rectangles in decreasing height order one by one on the bottom of the strip. When a rectangle cannot be placed on the bottom the strip, a new shelf is created from the top y-coordinate of the leftmost (tallest) rectangle of the topmost shelf.\\
+\\
+For any list $L$ of rectangles, the performance of FFDH is bounded by the following:
+\[
+	FFDH(L) \leq 1.7 \times OPT(L) + 1
+\]
+\textit{Split-Fit} (SF) also sorts the rectangles by decreasing height. We find $m \geq 1$, which is the maximum integer such that all given rectangles have width less than or equal to $\frac{1}{m}$. The rectangles are then divided into two sets $L_1$ and $L_2$:
+\begin{itemize}
+\item $L_1$ contains rectangles with width greater than $\frac{1}{m+1}$.
+\item $L_2$ contains rectangles with width less than or equal to $\frac{1}{m+1}$.
+\end{itemize}
+Then, the rectangles in $L_1$ are packed using FFDH. The resulting shelves produced are then rearranged by width, such that all shelves with width more than $\frac{m+1}{m+2}$ are below shelves with width less than or equal to $\frac{m+1}{m+2}$. This results in a free rectangle $R$ of width $\frac{1}{m+2}$ to the right of the shelves with width less than or equal to $\frac{m+1}{m+2}$.\\
+\\
+We then proceed to pack rectangles in $L_2$ into R, treating it as a strip of width $\frac{1}{m+2}$. However, if a new shelf is to be created, and it exceeds the height of R, then it is placed on top of the shelves from $L_1$ with width less than or equal to $\frac{m+1}{m+2}$, and thus allows the full width of the original strip. This continues until all rectangles have been packed.\\
+\\
+The performance of SF is bounded by the value of $m$:
+\[
+	SF(L) \leq \frac{m+2}{m+1}OPT(L) + 2
+\]
+In other words, if all rectangles have width less than or equal to one third of the strip width, then $m = 3$, and thus the performance bound for SF is $\frac{5}{4}OPT + 2$. However, in the worst case where $m = 1$ i.e. there exists at least one rectangle with width larger than $\frac{1}{2}$, the approximation ratio for SF is:
+\[
+	SF(L) \leq \frac{3}{2}OPT(L) + 2
+\]
 \end{document}
