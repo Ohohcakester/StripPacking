@@ -60,7 +60,9 @@ In other words, if all rectangles have width less than or equal to one third of 
 \]
 \section{Implemented algorithms}
 We have implemented FFDH and SF.\\
-Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\
+\\
+Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\\
+\\
 With the use of FFDH and SF, we can then derive upper and lower bounds for the exhaustive search, from which we hope to create a branch-and-bound algorithm to solve 2-D Strip Packing.
 
 \end{document}
