@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage[a4paper]{geometry}
+\usepackage{graphicx}
 
 \begin{document}
 
@@ -30,14 +31,15 @@ The decision problem of Strip Packing easily shown to be NP-HARD via a reduction
 Assuming $P \neq NP$, there is no absolute polynomial time approximation scheme for Strip Packing. In fact, there is no algorithm with an absolute approximation ratio better than $\frac{3}{2} - \epsilon$ as 1-dimensional bin-packing is a subproblem of strip packing (1-dimensional bin packing is equivalent to strip packing with rectangles of height $1$), and in 1-dimensional bin packing, it is NP-HARD to distinguish whether OPT is $2$ or $3$ due to a reduction from the Partition problem.
 
 \section{Existing algorithms}
-Many existing approximation algorithms for 2-D Strip Packing are level-oriented algorithms. Level-oriented algorithms involve packing items into shelves of certain heights. These algorithms include First-Fit Decreasing Height, and Split-Fit.\\
+Many existing approximation algorithms for 2-D Strip Packing are level-oriented algorithms. Level-oriented algorithms involve packing items into shelves of certain heights. These algorithms include First-Fit Decreasing Height, and Split-Fit.
 \subsection{First-Fit Decreasing Height}
-\\
 \textit{First-Fit Decreasing Height} (FFDH) places the rectangles in decreasing height order one by one on the bottom of the strip. When a rectangle cannot be placed on the bottom the strip, a new shelf is created from the top y-coordinate of the leftmost (tallest) rectangle of the topmost shelf.\\
-\\list $L$ of rectangles, the performance of FFDH is bounded by the following:
+\\
+For a given list $L$ of rectangles, the performance of FFDH is bounded by the following:
 \[
 	FFDH(L) \leq 1.7 \times OPT(L) + 1
 \]
+The proof for the approximation ratio of FFDH is based on the proof of the approximation ratio for the First-Fit algorithm for the one-dimensional bin packing problem, which is also asymptotically 1.7-approximate. The algorithms divide the set of items into 
 \subsection{Split-Fit}
 \textit{Split-Fit} (SF) also sorts the rectangles by decreasing height. We find $m \geq 1$, which is the maximum integer such that all given rectangles have width less than or equal to $\frac{1}{m}$. The rectangles are then divided into two sets $L_1$ and $L_2$:
 \begin{itemize}
@@ -56,4 +58,11 @@ In other words, if all rectangles have width less than or equal to one third of 
 \[
 	SF(L) \leq \frac{3}{2}OPT(L) + 2
 \]
+\section{Implemented algorithms}
+We have implemented FFDH and SF.\\
+\\
+Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\\
+\\
+With the use of FFDH and SF, we can then derive upper and lower bounds for the exhaustive search, from which we hope to create a branch-and-bound algorithm to solve 2-D Strip Packing.
+
 \end{document}
