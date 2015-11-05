@@ -3,6 +3,8 @@ public class Rect {
 	public final int y1;
 	public final int x2;
 	public final int y2;
+	public final int height;
+	public final int width;
 	
 	public Rect(int x1, int y1, int x2, int y2) {
 		if (x2<x1 || y2<y1) throw new UnsupportedOperationException("INVALID RECTANGLE");
@@ -10,6 +12,8 @@ public class Rect {
 		this.y1 = y1;
 		this.x2 = x2;
 		this.y2 = y2;
+		this.height = y2 - y1;
+		this.width = x2 - x1;
 	}
 
 	public static Rect place(int x, int y, int width, int height) {
