@@ -27,5 +27,9 @@ The task is to pack all of the $n$ rectangles into the strip, so that none of th
 \\
 The decision problem of Strip Packing easily shown to be NP-HARD via a reduction from the partition problem.\\
 
+Assuming $P \neq NP$, there is no absolute polynomial time approximation scheme for Strip Packing. In fact, there is no algorithm with an absolute approximation ratio better than $\frac{3}{2} - \epsilon$ as 1-dimensional bin-packing is a subproblem of strip packing (1-dimensional bin packing is equivalent to strip packing with rectangles of height $1$), and in 1-dimensional bin packing, it is NP-HARD to distinguish whether OPT is $2$ or $3$ due to a reduction from the Partition problem.
+
+
+
 
 \end{document}
