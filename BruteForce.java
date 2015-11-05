@@ -1,4 +1,4 @@
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,4 +90,4 @@ public class BruteForce extends StripPacking {
 		exhaustivePlace(inPlace, corners, placed);
 	}*/
 	
-}*/
+}
