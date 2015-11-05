@@ -4,19 +4,28 @@
 
 \begin{document}
 
+\author{
+Oh Shunhao\\
+  \texttt{A0065475X}
+  \and
+Nguyen Quoc Dat\\
+  \texttt{A0116703N}
+}
+\title{CS4234 - Strip Packing}
+\date{}
+
+\maketitle
+
 \begin{abstract}
 We demonstrate a polynomial time algorithm for 100-D Bin-packing
 \end{abstract}
-
-Here is the algorithm. \\
-This report is too small to contain the algorithm \\
-End algorithm. \\
 
 \section{The Strip Packing Problem}
 In the Strip Packing problem, we are given an infinitely tall strip, of maximum width $W$, and a set of $n$ rectangles $s_1,s_2,\cdots,s_n$, each represented by a tuple $s_i = (w_i,h_i)$, representing the width and height of each rectangle.\\
 \\
 The task is to pack all of the $n$ rectangles into the strip, so that none of the rectangles overlap, and such that the total height of the strip is minimised.\\
 \\
+The decision problem of Strip Packing easily shown to be NP-HARD via a reduction from the partition problem.\\
 
 \section{Existing algorithms}
 \paragraph{Level-oriented algorithms} Level-oriented algorithms involve packing items into shelves of certain heights. These algorithms include First-Fit Decreasing Height, and Split-Fit.\\
