@@ -1,3 +1,6 @@
 *.class
+report/*.log
+report/*.aux
+report/*.pdf
 a
 c
