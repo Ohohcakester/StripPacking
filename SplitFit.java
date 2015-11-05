@@ -42,10 +42,10 @@ public class SplitFit extends StripPacking {
                 maxWidth = floatingRects[i].width;
             }
         }
-        int m = (int)(1/maxWidth);
+        int m = (int)(width/maxWidth);
         //System.out.println("m = " + m);
 
-        int bound1 = (int)1/(m+1);
+        float bound1 = (float)width/(m+1);
         FloatingRect[] l1 = new FloatingRect[floatingRects.length];
         FloatingRect[] l2 = new FloatingRect[floatingRects.length];
         int l1Size = 0;
@@ -91,7 +91,7 @@ public class SplitFit extends StripPacking {
 
 
         // Partitioning blocks into <= (m+1)/(m+2) and > (m+1)/(m+2)
-        int bound2 = (int)(m+1)/(m+2);
+        float bound2 = (float)width*(m+1)/(m+2);
         Block[] arrangedBlocks = new Block[blocks.size()];
         int index = 0;
         int currHeight = 0;
@@ -132,7 +132,7 @@ public class SplitFit extends StripPacking {
         }
 
         //System.out.println(bound1 + ", " + bound2);
-        int rBaseX = bound2;
+        int rBaseX = (int)Math.ceil(bound2);
 
 
         //this.height = computeHeight();if("".isEmpty())return;

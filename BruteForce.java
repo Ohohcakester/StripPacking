@@ -6,12 +6,12 @@ public class BruteForce extends StripPacking {
 	
 	public int maxHeight;
 	
-	public BruteForce(FloatingRect[] floatingRects) {
-		super(floatingRects);
+	public BruteForce(FloatingRect[] floatingRects, int width) {
+		super(floatingRects, width);
 		// maxHeight is sum of all rectangle heights plus one. nothing goes above this.
 		maxHeight = Arrays.stream(floatingRects).map(floatingRect -> floatingRect.height).reduce(1, (a, b) -> a + b);
 	}
-	
+	/*
 	private class Corner {
 		public int x;
 		public int y;
@@ -88,6 +88,6 @@ public class BruteForce extends StripPacking {
 		boolean[] placed = new boolean[floatingRects.length];
 		
 		exhaustivePlace(inPlace, corners, placed);
-	}
+	}*/
 	
 }

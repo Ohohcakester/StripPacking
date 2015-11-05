@@ -58,6 +58,7 @@ public class StripPackingUI extends Application {
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
         TestCase testCase = readStdinTestCase();
+        //TestCase testCase = getTestCase();
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
         StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
