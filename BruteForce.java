@@ -71,9 +71,9 @@ public class BruteForce extends StripPacking {
 		}
 	}
 	
-	// Returns best height so far
+	// Returns height of solution
 	private int calcHeight(ArrayList<Rect> inPlace) {
-		return inPlace.stream().map(inPlaceRect -> inPlaceRect.y2).reduce((a, b) -> a <= b ? a : b);
+		return inPlace.stream().map(inPlaceRect -> inPlaceRect.y2).reduce((a, b) -> a >= b ? a : b);
 	}
 	
 	@Override

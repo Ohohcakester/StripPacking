@@ -41,7 +41,7 @@ For a given list $L$ of rectangles, the performance of FFDH is bounded by the fo
 \[
 	FFDH(L) \leq 1.7 \times OPT(L) + 1
 \]
-The proof for the approximation ratio of FFDH is based on the proof of the approximation ratio for the First-Fit algorithm for the one-dimensional bin packing problem, which is also asymptotically 1.7-approximate. The algorithms divide the set of items into 
+The proof for the approximation ratio of FFDH is based on the proof of the approximation ratio for the First-Fit algorithm for the one-dimensional bin packing problem, which is also asymptotically 1.7-approximate.
 \subsection{Split-Fit}
 \textit{Split-Fit} (SF) also sorts the rectangles by decreasing height. We find $m \geq 1$, which is the maximum integer such that all given rectangles have width less than or equal to $\frac{1}{m}$. The rectangles are then divided into two sets $L_1$ and $L_2$:
 \begin{itemize}
@@ -62,7 +62,6 @@ In other words, if all rectangles have width less than or equal to one third of 
 \]
 \section{Implemented algorithms}
 We have implemented the FFDH and SF algorithms with visualisations. The visualisations for our implementations can be seen in Figures \ref{fig:ffdhrun} and \ref{fig:splitfitrun}.\\
-
 \begin{figure}
 \centering
 \begin{subfigure}{.5\textwidth}
@@ -81,6 +80,7 @@ We have implemented the FFDH and SF algorithms with visualisations. The visualis
   \label{fig:ffdhsfrun}
 \end{figure}
 
+\noindent
 Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\\
 \\
 With the use of FFDH and SF, we can then derive upper and lower bounds for the exhaustive search, from which we hope to create a branch-and-bound algorithm to solve 2-D Strip Packing.
