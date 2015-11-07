@@ -57,12 +57,12 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        TestCase testCase = readStdinTestCase();
+        TestCase testCase = readStdinTestCase();    
         //TestCase testCase = getTestCase();
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
         //StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
-		StripPacking sp = new BruteForce(testCase.floatingRects, testCase.width);
+        StripPacking sp = new BruteForce(testCase.floatingRects, testCase.width);
         sp.execute();
         if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
         System.out.println("Height: " + sp.height);
