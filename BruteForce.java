@@ -53,7 +53,7 @@ public class BruteForce extends StripPacking {
     public void placeRect(Rect placedRect, ArrayList<Rect> inPlace, ArrayList<MaxRect> boxes, boolean[] placed, int frIndex) {
         // System.out.println(placedRect);
         // System.out.println(bestHeight);
-        if (placedRect.y2 > bestHeight) return; // pruned
+        if (placedRect.y2 >= bestHeight) return; // pruned
         // System.out.println(inPlace);
         placed[frIndex] = true;
         inPlace.add(placedRect);
@@ -102,6 +102,7 @@ public class BruteForce extends StripPacking {
         if (solHeight < bestHeight) {
             bestHeight = solHeight;
             bestSol = new ArrayList<>(inPlace);
+			//System.out.println(bestHeight);
         }
     }
     
