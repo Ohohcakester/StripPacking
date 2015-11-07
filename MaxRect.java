@@ -452,6 +452,30 @@ public class MaxRect {
         newMaxRectList.add(newMaxRect);
     }
 	
+	public boolean fits(Rect attemptPlace) {
+		if (this.height < attemptPlace.height || this.width < attemptPlace.width) return false;
+		
+		boolean hasLeftSupport = false;
+		for (Rect leftSupportRect : leftSupport) {
+			if (attemptPlace.touchLeft(leftSupportRect)) {
+				hasLeftSupport = true;
+				break;
+			}
+		}
+		if (!hasLeftSupport) return false;
+		
+		boolean hasDownSupport = false;
+		for (Rect downSupportRect : downSupport) {
+			if (attemptPlace.touchBottom(downSupportRect)) {
+				hasDownSupport = true;
+				break;
+			}
+		}
+		if (!hasDownSupport) return false;
+		
+		return true;
+	}
+	
 	public String toString() {
 		return "("+x1+","+y1+","+x2+","+y2+")";
 	}

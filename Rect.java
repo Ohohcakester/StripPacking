@@ -5,6 +5,7 @@ public class Rect {
 	public final int y2;
 	public final int height;
 	public final int width;
+	public int id; // assignable with no consequence?
 	
 	public Rect(int x1, int y1, int x2, int y2) {
 		if (x2<x1 || y2<y1) throw new UnsupportedOperationException("INVALID RECTANGLE");
@@ -18,6 +19,16 @@ public class Rect {
 
 	public static Rect place(int x, int y, int width, int height) {
 		return new Rect(x,y,x+width,y+height);
+	}
+	
+	// true if other is on the left
+	public boolean touchLeft(Rect other) {
+		return this.x1 == other.x2 && this.y1 < other.y2 && this.y2 > other.y1;
+	}
+	
+	// true if other is below
+	public boolean touchBottom(Rect other) {
+		return this.y1 == other.y2 && this.x1 < other.x2 && this.x2 > other.x1;
 	}
 	
 	public boolean overlaps(Rect other) {
