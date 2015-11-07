@@ -59,6 +59,7 @@ public class BruteForce extends StripPacking {
 			for (int j = i + 1; j < newBoxes.size(); j++) {
 				MaxRect checkedBox = newBoxes.get(j);
 				if (currBox.x1 == checkedBox.x1 && currBox.y1 == checkedBox.y1) System.out.println("FUCK curr = " + currBox + " other = " + checkedBox);
+				if (currBox.x1 == checkedBox.x1 && currBox.y1 == checkedBox.y1 && currBox.x2 == checkedBox.x2 && currBox.y2 == checkedBox.y2) System.out.println("FUCK curr = " + currBox + " other = " + checkedBox);
 			}
 		}
 		
