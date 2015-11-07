@@ -29,4 +29,8 @@ public class MaxRect {
     public static Rect place(int x, int y, int width, int height) {
         return new Rect(x,y,x+width,y+height);
     }
+	
+	public String toString() {
+		return "("+x1+","+y1+","+x2+","+y2+")";
+	}
 }
