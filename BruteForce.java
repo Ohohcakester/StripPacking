@@ -20,22 +20,22 @@ public class BruteForce extends StripPacking {
 		ArrayList<Rect> inPlace = new ArrayList<>();
 		ArrayList<MaxRect> boxes = new ArrayList<>();
 		boxes.add(new MaxRect(0, 0, width, maxHeight));
-		boolean[] placed = new boolean[floatingRects.size()];
+		boolean[] placed = new boolean[floatingRects.length];
 		
-		for (int i = 0; i < floatingRects.length; i++) 
-			placeRect(floatingRect[i].place(0, 0), inPlace, boxes, placed, i);
+		for (int i = 0; i < floatingRects.length; i++) {
+			placeRect(floatingRects[i].place(0, 0), inPlace, boxes, placed, i);
 		}
 		
-		for(Rect solRect : bestSol) {
-			rects[i] = solRect;
+		for(int i = 0; i < bestSol.size(); i++) {
+			rects[i] = bestSol.get(i);
 		}
 	}
 	
-	public void placeRect(Rect placed, ArrayList<Rect> inPlace, ArrayList<MaxRect> boxes, boolean[] placed, int frIndex) {
-		if (placed.y2 > bestHeight) return; // pruned
+	public void placeRect(Rect placedRect, ArrayList<Rect> inPlace, ArrayList<MaxRect> boxes, boolean[] placed, int frIndex) {
+		if (placedRect.y2 > bestHeight) return; // pruned
 		
 		placed[frIndex] = true;
-		inPlace.add(placed);
+		inPlace.add(placedRect);
 		boolean done = true;
 		for (int i = 0; i < placed.length; i++) {
 			if (!placed[i]) done = false;
@@ -47,7 +47,7 @@ public class BruteForce extends StripPacking {
 		
 		ArrayList<MaxRect> newBoxes = new ArrayList<MaxRect>();
 		for (MaxRect box : boxes) {
-			if (!box.splitMaxRect(newBoxes, placed)) { // Copy box array
+			if (!box.splitMaxRect(newBoxes, placedRect)) { // Copy box array
 				jumpOut(inPlace, placed, frIndex); // Prune if false returned
 				return;
 			}
@@ -58,20 +58,19 @@ public class BruteForce extends StripPacking {
 			MaxRect currBox = newBoxes.get(i);
 			for (int j = i + 1; j < newBoxes.size(); j++) {
 				MaxRect checkedBox = newBoxes.get(j);
-				if (currBox.x1 == checkedBox.x1 && currBox.y1 == checkedBox.y1) System.out.println("FUCK curr = " + currBox + " other = " checkedBox);
+				if (currBox.x1 == checkedBox.x1 && currBox.y1 == checkedBox.y1) System.out.println("FUCK curr = " + currBox + " other = " + checkedBox);
 			}
 		}
 		
-		for (int i = 0; i < floatingRects.size(); i++) {
+		for (int i = 0; i < floatingRects.length; i++) {
 			if (!placed[i]) {				
 				for (MaxRect newBox : newBoxes) {
-					placeRect(floatingRect[i].place(newBox.x1, newBox.y1), inPlace, newBoxes, placed, i);
+					placeRect(floatingRects[i].place(newBox.x1, newBox.y1), inPlace, newBoxes, placed, i);
 				}
 			}
 		}
 		
 		jumpOut(inPlace, placed, frIndex);
-		return bestHeight;
 	}
 	
 	public void calculateHeight(ArrayList<Rect> inPlace) {
