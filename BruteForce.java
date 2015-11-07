@@ -102,7 +102,7 @@ public class BruteForce extends StripPacking {
         if (solHeight < bestHeight) {
             bestHeight = solHeight;
             bestSol = new ArrayList<>(inPlace);
-			//System.out.println(bestHeight);
+            //System.out.println(bestHeight);
         }
     }
     
