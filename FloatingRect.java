@@ -1,9 +1,9 @@
 public class FloatingRect {
     public final int width;
     public final int height;
-    public int id; // assignable with no consequence
+    public final int id; // assignable with no consequence
 
-    public FloatingRect(int width, int height) {
+    public FloatingRect(int width, int height, int id) {
         this.width = width;
         this.height = height;
     }

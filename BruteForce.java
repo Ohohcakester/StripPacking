@@ -25,6 +25,10 @@ public class BruteForce extends StripPacking {
 		for (int i = 0; i < floatingRects.length; i++) 
 			placeRect(floatingRect[i].place(0, 0), inPlace, boxes, placed, i);
 		}
+		
+		for(Rect solRect : bestSol) {
+			rects[i] = solRect;
+		}
 	}
 	
 	public void placeRect(Rect placed, ArrayList<Rect> inPlace, ArrayList<MaxRect> boxes, boolean[] placed, int frIndex) {
