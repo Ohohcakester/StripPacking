@@ -356,7 +356,6 @@ public class MaxRect {
         newMaxRectList.add(newMaxRect);
     }
 
-
     public void createOnLeft(ArrayList<MaxRect> newMaxRectList, Rect newRect) {
         int rightX = newRect.x1;
 
@@ -452,5 +451,8 @@ public class MaxRect {
 
         newMaxRectList.add(newMaxRect);
     }
-
+	
+	public String toString() {
+		return "("+x1+","+y1+","+x2+","+y2+")";
+	}
 }
