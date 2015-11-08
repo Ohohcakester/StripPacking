@@ -314,7 +314,9 @@ public class MaxRect {
                         *  :.....:
                         */
                         // Should prune this one. There is no reason to place a floating block.
-                        return false;
+                        // Shouldn't be possible to reach here after MaxRect.fits pruning.
+                        throw new UnsupportedOperationException("Floating box kinshi");
+                        // return false;
                     }
                 }
             }
