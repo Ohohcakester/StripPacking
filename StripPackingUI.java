@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.util.*;
+import java.io.File;
+import java.io.IOException;
 
 public class StripPackingUI extends Application {
 
@@ -51,14 +53,30 @@ public class StripPackingUI extends Application {
         return new TestCase(rects, w);
     }
     
+    private static TestCase getCaseGen(String outputFile, int n, int w) {
+        try {
+            CaseGen.generateCase(outputFile, n, w);
+            Scanner sc = new Scanner(new File(outputFile));
+            FloatingRect[] rects = new FloatingRect[n];
+            for (int i=0;i<n;++i) {
+                rects[i] = FloatingRect.create(sc.nextInt(),sc.nextInt());
+            }
+            return new TestCase(rects, w);
+        } catch (IOException e) {
+            System.out.println("Error while generating case.");
+            return null;
+        }
+    }
+    
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("");
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
         
-        TestCase testCase = readStdinTestCase();    
+        //TestCase testCase = readStdinTestCase();    
         //TestCase testCase = getTestCase();
+        TestCase testCase = getCaseGen("test.txt", 6, 18);
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
         //StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
