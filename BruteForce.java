@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Comparator;
 
 public class BruteForce extends StripPacking {
     
@@ -10,13 +11,15 @@ public class BruteForce extends StripPacking {
     
     public BruteForce(FloatingRect[] floatingRects, int width) {
         super(floatingRects, width);
-        assignFrectIDs();
+        processFrects();
         // maxHeight is sum of all rectangle heights plus one. nothing goes to this height.
         maxHeight = Arrays.stream(floatingRects).map(floatingRect -> floatingRect.height).reduce(1, (a, b) -> a + b);
     }
     
-    public void assignFrectIDs() {
+    // assign IDs and sort by DH
+    public void processFrects() {
         for (int i = 0; i < floatingRects.length; i++) floatingRects[i].id = i;
+        Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
     }
     
     @Override
@@ -102,7 +105,7 @@ public class BruteForce extends StripPacking {
         if (solHeight < bestHeight) {
             bestHeight = solHeight;
             bestSol = new ArrayList<>(inPlace);
-            //System.out.println(bestHeight);
+            System.out.println(bestHeight);
         }
     }
     

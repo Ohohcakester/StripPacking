@@ -23,7 +23,7 @@ public class FirstFitDecreasingHeight extends StripPacking {
         super(floatingRects, width);
     }
 
-    public Comparator<FloatingRect> decreasingHeight = (fr1,fr2) -> {
+    public static Comparator<FloatingRect> decreasingHeight = (fr1,fr2) -> {
         if (fr1.height < fr2.height) return 1;
         if (fr1.height > fr2.height) return -1;
         return 0;
