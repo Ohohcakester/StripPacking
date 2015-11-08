@@ -88,6 +88,24 @@ public class BruteForce extends StripPacking {
         }
         
         for (int i = 0; i < floatingRects.length; i++) {
+            if (placed[i]) continue;
+            boolean lbPrune = true;
+            for (MaxRect newBox : newBoxes) { // search for lowest box that the tallest can fit in without exceeding upper bound
+                Rect attemptTallest = floatingRects[i].place(newBox.x1, newBox.y1);
+                if (attemptTallest.y2 < bestHeight && newBox.fits(attemptTallest)) {
+                    lbPrune = false;
+                    break;
+                }
+            }
+            if (lbPrune) {
+                //System.out.println("LB prune");
+                jumpOut(inPlace, placed, frIndex);
+                return;
+            }
+            break;
+        }
+        
+        for (int i = 0; i < floatingRects.length; i++) {
             if (!placed[i]) {
                 for (MaxRect newBox : newBoxes) {
                     Rect attemptPlace = floatingRects[i].place(newBox.x1, newBox.y1);
