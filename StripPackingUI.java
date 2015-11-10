@@ -14,6 +14,18 @@ public class StripPackingUI extends Application {
     public static final int resX = 800;
     public static final int resY = 600;
 
+    public static final int MAX_SNAPSHOTS = 500;
+    public static int nSnapshotCalls = 0;
+    public static int snapshotStartPoint = 0;
+    public static int currentSnapshot = 0;
+    public static int currentWidth = 0;
+    public static final ArrayList<Rect[]> snapshots = new ArrayList<>();
+    public static final ArrayList<Integer> snapshotHeights = new ArrayList<>();
+
+    public interface SnapshotFunction{ 
+        public void run(Rect[] array, ArrayList<Rect> arrayList, int height);
+    }
+
     private static class TestCase {
         public FloatingRect[] floatingRects;
         public int width;
@@ -70,17 +82,33 @@ public class StripPackingUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        boolean snapshotsOn = false;
+
+
         primaryStage.setTitle("");
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
-        
-        TestCase testCase = readStdinTestCase();    
+
+        TestCase testCase = getCaseGen("hahahahah.txt", 4, 100);    
+        //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 6, 18);
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
         //StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
         StripPacking sp = new BruteForce(testCase.floatingRects, testCase.width);
+
+        if (snapshotsOn) {
+            sp.setSnapshotFunction((array, arrayList, height) -> {
+                nSnapshotCalls++;
+                if (nSnapshotCalls < snapshotStartPoint) return;
+                if (snapshots.size() >= MAX_SNAPSHOTS) return;
+                if (array == null) snapshots.add(arrayList.toArray(new Rect[arrayList.size()]));
+                else snapshots.add(Arrays.copyOf(array, array.length));
+                snapshotHeights.add(height);
+            });
+        }
+
         sp.execute();
         if (!sp.validate()) throw new UnsupportedOperationException("INVALID PACKING");
         System.out.println("Height: " + sp.height);
@@ -88,6 +116,16 @@ public class StripPackingUI extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        if (snapshotsOn) {
+            System.out.println("Total Snapshot Calls: " + nSnapshotCalls);
+            scene.setOnKeyPressed(event -> {
+                currentSnapshot++;
+                if (currentSnapshot >= snapshots.size()) currentSnapshot = 0;
+                System.out.println("VIEWING SNAPSHOT " + currentSnapshot + " with height " + snapshotHeights.get(currentSnapshot));
+                redraw(snapshots.get(currentSnapshot), testCase.width, snapshotHeights.get(currentSnapshot));
+            });
+        }
     }
 
     public void redraw(Rect[] rects, int width, int height) {
@@ -102,8 +140,8 @@ public class StripPackingUI extends Application {
         drawRectangle(0,height*scale,resX,resY,1, Color.BLACK);
 
         for (Rect rect : rects) {
-            if (rect == null) System.out.println("Null Rect Found");
-            else drawRectangle(rect, scale);
+            if (rect != null) drawRectangle(rect, scale);
+            //else System.out.println("Null Rect Found");
         }
     }
 

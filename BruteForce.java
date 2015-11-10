@@ -61,6 +61,7 @@ public class BruteForce extends StripPacking {
         // System.out.println(inPlace);
         placed[frIndex] = true;
         inPlace.add(placedRect);
+        snapshotFunction.run(null, inPlace, bestHeight);
         boolean done = true;
         for (int i = 0; i < placed.length; i++) {
             if (!placed[i]) done = false;
