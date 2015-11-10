@@ -1,6 +1,7 @@
-
+import java.util.function.Consumer;
 
 public class StripPacking {
+    protected StripPackingUI.SnapshotFunction snapshotFunction = (a,b,c)->{};
     public int height;
     public final FloatingRect[] floatingRects;
     public Rect[] rects;
@@ -21,6 +22,10 @@ public class StripPacking {
             System.out.println(rects[i]);
         }
         this.height = computeHeight();
+    }
+
+    public void setSnapshotFunction(StripPackingUI.SnapshotFunction action) {
+        this.snapshotFunction = action;
     }
 
     protected boolean intEquals(int a, int b) {
