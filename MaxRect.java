@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MaxRect {
     public final int x1;
@@ -157,8 +158,8 @@ public class MaxRect {
                         * :..|...|..:
                         *    |___|
                         */
-                        createOnLeft(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnLeft(newMaxRectList, newRect);
                         return true;
                     }
                 }
@@ -234,8 +235,8 @@ public class MaxRect {
                         * | :..|..:
                         * |____|
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     }
                 } else {
@@ -247,8 +248,8 @@ public class MaxRect {
                         * :..|..: |
                         *    |____|
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     } else {
                         // - D - -
@@ -259,9 +260,9 @@ public class MaxRect {
                         * :.|.|.:
                         *   |_|
                         */
-                        createOnTop(newMaxRectList, newRect);
-                        createOnLeft(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnLeft(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     }
                 }
@@ -276,8 +277,8 @@ public class MaxRect {
                         *    :   :
                         *    :...:
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnBottom(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     } else {
                         // - - L -
@@ -288,8 +289,8 @@ public class MaxRect {
                         *    :...:
                         */
                         createOnBottom(newMaxRectList, newRect);
-                        createOnTop(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     }
                 } else {
@@ -302,8 +303,8 @@ public class MaxRect {
                         *  :...:
                         */
                         createOnBottom(newMaxRectList, newRect);
-                        createOnTop(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         throw new UnsupportedOperationException("I thought you said this was impossibruh");
                     } else {
                         // - - - -
@@ -454,28 +455,49 @@ public class MaxRect {
         newMaxRectList.add(newMaxRect);
     }
     
-    public boolean fits(Rect attemptPlace) {
+    public boolean fits(Rect attemptPlace, Rect parentRect, ArrayList<Rect> inPlace, int n) {
         if (this.height < attemptPlace.height || this.width < attemptPlace.width) return false;
+        // System.out.println("Attempting " + attemptPlace);
         
+        boolean[] supportTrail = new boolean[n]; // Compute the support trail while checking
         boolean hasLeftSupport = false;
         for (Rect leftSupportRect : leftSupport) {
             if (attemptPlace.touchLeft(leftSupportRect)) {
+                // System.out.println(leftSupportRect + " " + leftSupportRect.id);
                 hasLeftSupport = true;
-                break;
+                buildSupportTrail(supportTrail, leftSupportRect);
             }
         }
         if (!hasLeftSupport) return false;
         
         boolean hasDownSupport = false;
+        Rect leftestDown = null;
         for (Rect downSupportRect : downSupport) {
             if (attemptPlace.touchBottom(downSupportRect)) {
+                // System.out.println(downSupportRect + " " + downSupportRect.id);
                 hasDownSupport = true;
-                break;
+                buildSupportTrail(supportTrail, downSupportRect);
             }
         }
         if (!hasDownSupport) return false;
         
+        // Check for ordering
+        for (Rect inPlaceRect : inPlace) {
+            if (!supportTrail[inPlaceRect.id] && inPlaceRect.y1 > attemptPlace.y1) return false;
+        }
+        
+        boolean[] currTrail = Arrays.copyOf(parentRect.pointerTrail, n);
+        currTrail[parentRect.id] = true;
+        attemptPlace.pointerTrail = currTrail;
         return true;
+    }
+    
+    public void buildSupportTrail(boolean[] dest, Rect supportRect) {
+        if (supportRect.id == -1) return; // don't touch the strip walls
+        boolean[] src = supportRect.pointerTrail;
+        for (int i = 0; i < src.length; i++) {
+            dest[i] |= src[i];
+        }
     }
     
     public String toString() {

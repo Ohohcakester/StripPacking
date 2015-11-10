@@ -82,14 +82,14 @@ public class StripPackingUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        boolean snapshotsOn = false;
+        boolean snapshotsOn = true;
 
 
         primaryStage.setTitle("");
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
 
-        TestCase testCase = getCaseGen("hahahahah.txt", 4, 100);    
+        TestCase testCase = getCaseGen("hahahahah.txt", 7, 100);
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 6, 18);

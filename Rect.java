@@ -6,6 +6,7 @@ public class Rect {
     public final int height;
     public final int width;
     public int id; // assignable with no consequence?
+    public boolean[] pointerTrail; // not actually a trail
     
     public Rect(int x1, int y1, int x2, int y2) {
         if (x2<x1 || y2<y1) throw new UnsupportedOperationException("INVALID RECTANGLE");
@@ -15,6 +16,11 @@ public class Rect {
         this.y2 = y2;
         this.height = y2 - y1;
         this.width = x2 - x1;
+    }
+    
+    public Rect(int x1, int y1, int x2, int y2, int id) {
+        this(x1,y1,x2,y2);
+        this.id = id;
     }
 
     public static Rect place(int x, int y, int width, int height) {
