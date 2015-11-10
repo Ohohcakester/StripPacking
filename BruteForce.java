@@ -116,7 +116,7 @@ public class BruteForce extends StripPacking {
                     }
                     Rect attemptPlace = floatingRects[i].place(newBox.x1, newBox.y1);
                     attemptPlace.id = i;
-                    if (newBox.fits(attemptPlace) placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight);
+                    if (newBox.fits(attemptPlace)) placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight);
                 }
             }
         }
