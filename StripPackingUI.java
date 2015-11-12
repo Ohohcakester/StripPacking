@@ -64,16 +64,27 @@ public class StripPackingUI extends Application {
         }
         return new TestCase(rects, w);
     }
-    
-    private static TestCase getCaseGen(String outputFile, int n, int w) {
+
+    private static TestCase readFromFile(String fileName) {
         try {
-            CaseGen.generateCase(outputFile, n, w);
-            Scanner sc = new Scanner(new File(outputFile));
+            Scanner sc = new Scanner(new File(fileName));
+            int n = sc.nextInt();
+            int w = sc.nextInt();
             FloatingRect[] rects = new FloatingRect[n];
             for (int i=0;i<n;++i) {
                 rects[i] = FloatingRect.create(sc.nextInt(),sc.nextInt());
             }
             return new TestCase(rects, w);
+        } catch (IOException e) {
+            System.out.println("Error while reading case.");
+            return null;
+        }
+    }
+    
+    private static TestCase getCaseGen(String outputFile, int n, int w) {
+        try {
+            CaseGen.generateCase(outputFile, n, w);
+            return readFromFile(outputFile);
         } catch (IOException e) {
             System.out.println("Error while generating case.");
             return null;
@@ -82,14 +93,14 @@ public class StripPackingUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        boolean snapshotsOn = false;
-
+        boolean snapshotsOn = true;
 
         primaryStage.setTitle("");
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
 
-        TestCase testCase = getCaseGen("hahahahah.txt", 4, 100);    
+        //TestCase testCase = getCaseGen("hahahahah.txt", 7, 100);  
+        TestCase testCase = readFromFile("hahahahah.txt");    
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 6, 18);
