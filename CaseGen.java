@@ -33,9 +33,11 @@ public class CaseGen {
     
     public static double widthFun(int scale) {
         return (Math.random()*Math.random()*Math.random()*(Math.random()+0.15) * scale) + 1;
+        //return (Math.random()*(Math.random()+0.15) * scale) + 1;
     }
     
     public static double heightFun(int scale) {
         return (Math.random()*Math.random()*Math.random()*(Math.random()+0.3) * scale) + 1;
+        //return (Math.random()*(Math.random()+0.3) * scale) + 1;
     }
 }
