@@ -124,12 +124,12 @@ public class BruteForce extends StripPacking {
         int bestDepth = 1;
         int k = 1;
         for (int i = 0; i < floatingRects.length; i++) {
-            if (!placed[i]) {
+            if (!placed[i]) {                            
+                if (k > bestDepth) {
+                    jumpOut(inPlace, placed, frIndex);
+                    return bestDepth;
+                }
                 for (MaxRect newBox : newBoxes) {
-                    if (k > bestDepth) {
-                        jumpOut(inPlace, placed, frIndex);
-                        return bestDepth;
-                    }
                     if (intermediateHeight >= bestHeight) {
                         jumpOut(inPlace, placed, frIndex);
                         return bestDepth;
@@ -141,10 +141,10 @@ public class BruteForce extends StripPacking {
                     // update dependency array if feasible
                     if (newBox.fits(attemptPlace, placedRect, inPlace, n)) {
                         bestDepth = Math.max(bestDepth, 1 + placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight));
-                        k++;
                         // System.out.println(bestDepth);
                     }
                 }
+                k++;
             }
         }
         
