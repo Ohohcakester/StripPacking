@@ -182,8 +182,8 @@ public class MaxRect {
                         * |_:__|  :
                         *   :.....:
                         */
-                        createOnBottom(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnBottom(newMaxRectList, newRect);
                         return true;
                     }
                 } else {
@@ -195,8 +195,8 @@ public class MaxRect {
                         * :  |__:_|
                         * :.....:
                         */
-                        createOnBottom(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
+                        createOnBottom(newMaxRectList, newRect);
                         return true;
                     } else {
                         // U - - -
@@ -206,9 +206,9 @@ public class MaxRect {
                         * : |_| :
                         * :.....:
                         */
-                        createOnBottom(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnBottom(newMaxRectList, newRect);
                         throw new UnsupportedOperationException("I thought you said this was impossible");
                     }
                 }
@@ -234,8 +234,8 @@ public class MaxRect {
                         * | :..|..:
                         * |____|
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     }
                 } else {
@@ -247,8 +247,8 @@ public class MaxRect {
                         * :..|..: |
                         *    |____|
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     } else {
                         // - D - -
@@ -259,9 +259,9 @@ public class MaxRect {
                         * :.|.|.:
                         *   |_|
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     }
                 }
@@ -276,8 +276,8 @@ public class MaxRect {
                         *    :   :
                         *    :...:
                         */
-                        createOnTop(newMaxRectList, newRect);
                         createOnBottom(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     } else {
                         // - - L -
@@ -288,8 +288,8 @@ public class MaxRect {
                         *    :...:
                         */
                         createOnBottom(newMaxRectList, newRect);
-                        createOnTop(newMaxRectList, newRect);
                         createOnRight(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         return true;
                     }
                 } else {
@@ -302,8 +302,8 @@ public class MaxRect {
                         *  :...:
                         */
                         createOnBottom(newMaxRectList, newRect);
-                        createOnTop(newMaxRectList, newRect);
                         createOnLeft(newMaxRectList, newRect);
+                        createOnTop(newMaxRectList, newRect);
                         throw new UnsupportedOperationException("I thought you said this was impossibruh");
                     } else {
                         // - - - -
