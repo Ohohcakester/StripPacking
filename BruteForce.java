@@ -8,13 +8,14 @@ public class BruteForce extends StripPacking {
     public int maxHeight;
     public int bestHeight;
     public ArrayList<Rect> bestSol;
-
+    public int n;
+    
     public static Comparator<FloatingRect> decreasingWidth = (fr1,fr2) -> {
         if (fr1.width < fr2.width) return 1;
         if (fr1.width > fr2.width) return -1;
         return 0;
     };
-    
+
     public BruteForce(FloatingRect[] floatingRects, int width) {
         super(floatingRects, width);
         processFrects();
@@ -27,6 +28,7 @@ public class BruteForce extends StripPacking {
         for (int i = 0; i < floatingRects.length; i++) floatingRects[i].id = i;
         //Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
         Arrays.sort(floatingRects, decreasingWidth);
+        n = floatingRects.length;
     }
     
     @Override
@@ -38,7 +40,9 @@ public class BruteForce extends StripPacking {
         boolean[] placed = new boolean[floatingRects.length];
         
         for (int i = 0; i < floatingRects.length; i++) {
-            placeRect(floatingRects[i].place(0, 0), inPlace, boxes, placed, i, 0);
+            Rect firstRect = floatingRects[i].place(0, 0);
+            firstRect.pointerTrail = new boolean[n];
+            placeRect(firstRect, inPlace, boxes, placed, i, 0);
         }
         
         for (Rect solRect : bestSol) {
@@ -53,10 +57,10 @@ public class BruteForce extends StripPacking {
         ArrayList<Rect> rightSupport = new ArrayList<>();
         ArrayList<Rect> upSupport = new ArrayList<>();
         ArrayList<Rect> downSupport = new ArrayList<>();
-        leftSupport.add(new Rect(-1, 0, 0, maxHeight));
-        rightSupport.add(new Rect(width, 0, width + 1, maxHeight));
-        downSupport.add(new Rect(0, -1, width, 0));
-        upSupport.add(new Rect(0, maxHeight, width, maxHeight + 1));
+        leftSupport.add(new Rect(-1, 0, 0, maxHeight, -1));
+        rightSupport.add(new Rect(width, 0, width + 1, maxHeight, -1));
+        downSupport.add(new Rect(0, -1, width, 0, -1));
+        upSupport.add(new Rect(0, maxHeight, width, maxHeight + 1, -1));
         return new MaxRect(0, 0, width, maxHeight, upSupport, downSupport, leftSupport, rightSupport);
     }
     
@@ -101,7 +105,7 @@ public class BruteForce extends StripPacking {
             boolean lbPrune = true;
             for (MaxRect newBox : newBoxes) { // search for lowest box that the tallest can fit in without exceeding upper bound
                 Rect attemptTallest = floatingRects[i].place(newBox.x1, newBox.y1);
-                if (attemptTallest.y2 < bestHeight && newBox.fits(attemptTallest)) {
+                if (attemptTallest.y2 < bestHeight && newBox.fits(attemptTallest, placedRect, inPlace, n)) {
                     lbPrune = false;
                     break;
                 }
@@ -123,7 +127,10 @@ public class BruteForce extends StripPacking {
                     }
                     Rect attemptPlace = floatingRects[i].place(newBox.x1, newBox.y1);
                     attemptPlace.id = i;
-                    if (newBox.fits(attemptPlace)) placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight);
+                    // pass both candidate and parent
+                    // check if follows ordering
+                    // update dependency array if feasible
+                    if (newBox.fits(attemptPlace, placedRect, inPlace, n)) placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight);
                 }
             }
         }

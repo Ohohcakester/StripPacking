@@ -100,8 +100,8 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
 
-        //TestCase testCase = getCaseGen("hahahahah.txt", 293, 900);  
-        TestCase testCase = readFromFile("hahahahah.txt");    
+        TestCase testCase = getCaseGen("hahahahah.txt", 293, 900);  
+        //TestCase testCase = readFromFile("hahahahah.txt");
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 6, 18);
