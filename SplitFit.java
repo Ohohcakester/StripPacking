@@ -128,6 +128,7 @@ public class SplitFit extends StripPacking {
             for (FloatingRect frect : block.rects) {
                 rects[frect.id] = frect.place(left, block.bottomY);
                 left += frect.width;
+                snapshot(rects[frect.id].y2);
             }
         }
 
@@ -181,6 +182,7 @@ public class SplitFit extends StripPacking {
                 rects[frect.id] = rect;
                 topBlockY = block.topY;
             }
+            snapshot(topBlockY);
         }
 
         this.height = computeHeight();
@@ -194,5 +196,9 @@ public class SplitFit extends StripPacking {
             return true;
         }
         return false;
+    }
+
+    private void snapshot(int currHeight) {
+        snapshotFunction.run(rects, null, currHeight);
     }
 }

@@ -52,6 +52,7 @@ public class FirstFitDecreasingHeight extends StripPacking {
                     rects[frect.id] = rect;
                     block.startX = rect.x2;
                     placed = true;
+                    snapshot(blocks.get(blocks.size()-1).topY);
                     break;
                 }
             }
@@ -62,8 +63,13 @@ public class FirstFitDecreasingHeight extends StripPacking {
                 Rect rect = frect.place(block.startX, block.bottomY);
                 block.startX = rect.x2;
                 rects[frect.id] = rect;
+                snapshot(blocks.get(blocks.size()-1).topY);
             }
         }
         this.height = computeHeight();
+    }
+
+    private void snapshot(int currHeight) {
+        snapshotFunction.run(rects, null, currHeight);
     }
 }

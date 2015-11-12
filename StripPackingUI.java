@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.input.*;
 import java.util.*;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class StripPackingUI extends Application {
     public static final int resX = 800;
     public static final int resY = 600;
 
-    public static final int MAX_SNAPSHOTS = 500;
+    public static final int MAX_SNAPSHOTS = 5000;
     public static int nSnapshotCalls = 0;
     public static int snapshotStartPoint = 0;
     public static int currentSnapshot = 0;
@@ -99,15 +100,15 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
 
-        //TestCase testCase = getCaseGen("hahahahah.txt", 7, 100);  
+        //TestCase testCase = getCaseGen("hahahahah.txt", 293, 900);  
         TestCase testCase = readFromFile("hahahahah.txt");    
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 6, 18);
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
-        //StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
-        StripPacking sp = new BruteForce(testCase.floatingRects, testCase.width);
+        StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
+        //StripPacking sp = new BruteForce(testCase.floatingRects, testCase.width);
 
         if (snapshotsOn) {
             sp.setSnapshotFunction((array, arrayList, height) -> {
@@ -131,9 +132,14 @@ public class StripPackingUI extends Application {
         if (snapshotsOn) {
             System.out.println("Total Snapshot Calls: " + nSnapshotCalls);
             scene.setOnKeyPressed(event -> {
-                currentSnapshot++;
-                if (currentSnapshot >= snapshots.size()) currentSnapshot = 0;
-                System.out.println("VIEWING SNAPSHOT " + currentSnapshot + " with height " + snapshotHeights.get(currentSnapshot));
+                if (event.getCode().equals(KeyCode.A) || event.getCode().equals(KeyCode.LEFT)) {
+                    currentSnapshot--;
+                    if (currentSnapshot < 0) currentSnapshot = snapshots.size()-1;
+                } else {
+                    currentSnapshot++;
+                    if (currentSnapshot >= snapshots.size()) currentSnapshot = 0;
+                }
+                System.out.println(currentSnapshot + ": SNAPSHOT with height " + snapshotHeights.get(currentSnapshot));
                 redraw(snapshots.get(currentSnapshot), testCase.width, snapshotHeights.get(currentSnapshot));
             });
         }
