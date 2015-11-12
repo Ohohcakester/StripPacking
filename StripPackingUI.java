@@ -94,14 +94,14 @@ public class StripPackingUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        boolean snapshotsOn = true;
+        boolean snapshotsOn = false;
 
         primaryStage.setTitle("");
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
 
-        TestCase testCase = getCaseGen("hahahahah.txt", 15, 900);  
-        //TestCase testCase = readFromFile("hahahahah.txt");
+        //TestCase testCase = getCaseGen("hahahahah.txt", 11, 900);  
+        TestCase testCase = readFromFile("evil.txt");
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 5, 40);
@@ -120,6 +120,8 @@ public class StripPackingUI extends Application {
                 else snapshots.add(Arrays.copyOf(array, array.length));
                 snapshotHeights.add(height);
             });
+        } else {
+            sp.setSnapshotFunction((array, arrayList, height) -> {nSnapshotCalls++;});
         }
 
         sp.execute();
@@ -143,6 +145,8 @@ public class StripPackingUI extends Application {
                 System.out.println(currentSnapshot + ": SNAPSHOT with height " + snapshotHeights.get(currentSnapshot));
                 redraw(snapshots.get(currentSnapshot), testCase.width, snapshotHeights.get(currentSnapshot));
             });
+        } else {
+            System.out.println(nSnapshotCalls);
         }
     }
 
