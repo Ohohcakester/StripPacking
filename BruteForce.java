@@ -26,8 +26,8 @@ public class BruteForce extends StripPacking {
     // assign IDs and sort by DH
     public void processFrects() {
         for (int i = 0; i < floatingRects.length; i++) floatingRects[i].id = i;
-        //Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
-        Arrays.sort(floatingRects, decreasingWidth);
+        Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
+        //Arrays.sort(floatingRects, decreasingWidth);
         n = floatingRects.length;
     }
     
@@ -64,11 +64,13 @@ public class BruteForce extends StripPacking {
         return new MaxRect(0, 0, width, maxHeight, upSupport, downSupport, leftSupport, rightSupport);
     }
     
-    public void placeRect(Rect placedRect, ArrayList<Rect> inPlace, ArrayList<MaxRect> boxes, boolean[] placed, int frIndex, int intermediateHeight) {
+    public int placeRect(Rect placedRect, ArrayList<Rect> inPlace, ArrayList<MaxRect> boxes, boolean[] placed, int frIndex, int intermediateHeight) {
         // System.out.println(placedRect);
         // System.out.println(bestHeight);
         intermediateHeight = placedRect.y2 > intermediateHeight ? placedRect.y2 : intermediateHeight;
-        if (intermediateHeight >= bestHeight) return; // pruned without exploring
+        if (intermediateHeight >= bestHeight) {
+            return 1; // pruned without exploring
+        }
         // System.out.println(inPlace);
         placed[frIndex] = true;
         inPlace.add(placedRect);
@@ -80,14 +82,14 @@ public class BruteForce extends StripPacking {
         if (done) {
             calculateHeight(inPlace, intermediateHeight);
             jumpOut(inPlace, placed, frIndex);
-            return;
+            return 1;
         }
         
         ArrayList<MaxRect> newBoxes = new ArrayList<MaxRect>();
         for (MaxRect box : boxes) {
             if (!box.splitMaxRect(newBoxes, placedRect)) { // Copy box array
                 jumpOut(inPlace, placed, frIndex); // Prune if false returned
-                return;
+                return 1;
             }
         }
         
@@ -113,29 +115,40 @@ public class BruteForce extends StripPacking {
             if (lbPrune) {
                 //System.out.println("LB prune");
                 jumpOut(inPlace, placed, frIndex);
-                return;
+                return 1;
             }
             break;
         }
         
+        int bestDepth = 1;
+        int k = 1;
         for (int i = 0; i < floatingRects.length; i++) {
             if (!placed[i]) {
                 for (MaxRect newBox : newBoxes) {
+                    if (k > bestDepth) {
+                        jumpOut(inPlace, placed, frIndex);
+                        return bestDepth;
+                    }
                     if (intermediateHeight >= bestHeight) {
                         jumpOut(inPlace, placed, frIndex);
-                        return;
+                        return bestDepth;
                     }
                     Rect attemptPlace = floatingRects[i].place(newBox.x1, newBox.y1);
                     attemptPlace.id = i;
                     // pass both candidate and parent
                     // check if follows ordering
                     // update dependency array if feasible
-                    if (newBox.fits(attemptPlace, placedRect, inPlace, n)) placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight);
+                    if (newBox.fits(attemptPlace, placedRect, inPlace, n)) {
+                        bestDepth = Math.max(bestDepth, 1 + placeRect(attemptPlace, inPlace, newBoxes, placed, i, intermediateHeight));
+                        k++;
+                        // System.out.println(bestDepth);
+                    }
                 }
             }
         }
         
         jumpOut(inPlace, placed, frIndex);
+        return bestDepth;
     }
     
     public void calculateHeight(ArrayList<Rect> inPlace, int solHeight) {
