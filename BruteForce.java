@@ -8,6 +8,12 @@ public class BruteForce extends StripPacking {
     public int maxHeight;
     public int bestHeight;
     public ArrayList<Rect> bestSol;
+
+    public static Comparator<FloatingRect> decreasingWidth = (fr1,fr2) -> {
+        if (fr1.width < fr2.width) return 1;
+        if (fr1.width > fr2.width) return -1;
+        return 0;
+    };
     
     public BruteForce(FloatingRect[] floatingRects, int width) {
         super(floatingRects, width);
@@ -19,7 +25,8 @@ public class BruteForce extends StripPacking {
     // assign IDs and sort by DH
     public void processFrects() {
         for (int i = 0; i < floatingRects.length; i++) floatingRects[i].id = i;
-        Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
+        //Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
+        Arrays.sort(floatingRects, decreasingWidth);
     }
     
     @Override
