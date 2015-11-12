@@ -41,6 +41,7 @@ public class BruteForce extends StripPacking {
         
         for (int i = 0; i < floatingRects.length; i++) {
             Rect firstRect = floatingRects[i].place(0, 0);
+            firstRect.id = i;
             firstRect.pointerTrail = new boolean[n];
             placeRect(firstRect, inPlace, boxes, placed, i, 0);
         }
