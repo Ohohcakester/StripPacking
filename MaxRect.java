@@ -501,6 +501,7 @@ public class MaxRect {
         for (int i = 0; i < src.length; i++) {
             dest[i] |= src[i];
         }
+        dest[supportRect.id] = true;
     }
     
     public String toString() {
