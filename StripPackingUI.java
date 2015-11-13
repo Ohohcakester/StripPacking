@@ -27,7 +27,7 @@ public class StripPackingUI extends Application {
         public void run(Rect[] array, ArrayList<Rect> arrayList, int height);
     }
 
-    private static class TestCase {
+    public static class TestCase {
         public FloatingRect[] floatingRects;
         public int width;
 
@@ -43,7 +43,7 @@ public class StripPackingUI extends Application {
         Application.launch(args);
     }
 
-    private static TestCase getTestCase() {
+    public static TestCase getTestCase() {
         return new TestCase(
             new FloatingRect[] {
                 FloatingRect.create(3,5),
@@ -55,7 +55,7 @@ public class StripPackingUI extends Application {
         );
     }
 
-    private static TestCase readStdinTestCase() {
+    public static TestCase readStdinTestCase() {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int w = sc.nextInt();
@@ -66,7 +66,7 @@ public class StripPackingUI extends Application {
         return new TestCase(rects, w);
     }
 
-    private static TestCase readFromFile(String fileName) {
+    public static TestCase readFromFile(String fileName) {
         try {
             Scanner sc = new Scanner(new File(fileName));
             int n = sc.nextInt();
@@ -82,7 +82,7 @@ public class StripPackingUI extends Application {
         }
     }
     
-    private static TestCase getCaseGen(String outputFile, int n, int w) {
+    public static TestCase getCaseGen(String outputFile, int n, int w) {
         try {
             CaseGen.generateCase(outputFile, n, w);
             return readFromFile(outputFile);
