@@ -183,7 +183,7 @@ When a maximal rectangle is split to form free rectangles, the parent rectangle 
 
 \begin{thm}
 \label{thm:supportinheritance}
-When a free rectangle $r$ is split from placing an object $s$ into a maximal rectangle $p$ (the parent rectangle), on each side $L$, the support of $r$ on side $L$ is either $\{s\}$ or a subset of the support of $p$ on side $L$.
+When a free rectangle $r$ is split from placing an object $s$ into a maximal rectangle $p$ (the parent rectangle), on each side $T$, the support of $r$ on side $T$ is either $\{s\}$ or a subset of the support of $p$ on side $T$.
 \end{thm}
 \begin{proof}
 This is easy to see, as for each of the cases shown in figure \ref{fig:maxrectsplitting}, each of the newly created free rectangles share three sides with the parent rectangle $p$, and the last side touches the object $s$. The side touching the object $s$ has only $s$ as its support, and the other three sides' supports are subsets of the respective sides' support in the parent rectangle $p$.
@@ -203,7 +203,51 @@ This makes a total running time of $\displaystyle\sum_{m=0}^{n-1} (\prod_{k=1}^{
 
 \subsection{Pruning Rules}
 
+\subsubsection{Branch and Bound}
+The most basic pruning rules are the upper bound and lower bound pruning rules of branch and bound. At all times, we maintain an upper-bound value $U$. We initialise $U$ to a known upper bound (for example, the sum of the heights of the rectangles, or the solution found by a heuristic algorithm like FFDH). Whenever we find a feasible solution of total height less than $U$, we update the value of $U$ to the height of the solution found. Now, at any point of the algorithm, if the current total height of the placement $P$, $height(P) \geq U$, we can prune the current branch.\\
 
+At any point of the algorithm, let $S$ be any subset of the remaining unplaced objects. Suppose that we can find a lower bound $L(S)$ for the minimum-height strip that can pack all of the objects in $S$. Let $h$ be the height of the lowest maximal rectangle that can fit some element in $S$. We can then prune the current branch if $L(S) + h \geq U$.\\
+
+% XXXXXXXX GIVE EXAMPLES OF LOWER BOUND
+
+\subsubsection{Symmetry Removal}
+As we are allowed to place the rectangles in any order, a common problem that occurs during our rectangle placement is repeat computations. For example, in figure \ref{fig:repeatplacements}, the rectangles $a,b,c,d$ can be placed in $4!$ possible orders, each corresponding to a different branch. As each of these packings are equivalent, only one of the packings need to be explored.\\ 
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.5\linewidth]{FFDHrun.png}
+  \caption{This packing can be built from many possible placement orders}
+  \label{fig:repeatplacements}
+\end{figure}
+
+A simple way of preventing repeated computations is by storing information on which computations have been done before. However, due to the large amount of branches, this will require an exponential amount of memory to store. Theorem \ref{thm:fixedordering} provides an alternative way of pruning symmetric branches without storing any additional memory.
+
+\begin{thm} Fixed Ordering\\
+\label{thm:fixedordering}
+Suppose that we have a function $f$ that takes in a packing $P$, that returns an order in which the objects can be placed for form $P$, with the following properties:
+  \begin{enumerate}
+  \item $f$ is well defined - it deterministically produces an ordering from only the current positions of the objects.
+  \item Take any placement $P$ with some $m \in \mathbb{N}$ placed rectangles. For each $k \in \{1,\cdots,m\}$, the packing $P_k$ consisting only of the first $k$ placed rectangles in $f(P)$ is tight, and $f(P_k)$ assigns the same orders to the $k$ rectangles as $f(P)$.
+  \end{enumerate}
+And suppose we add the pruning rule: Suppose the current packing is $P$. If the order in which the rectangles were placed is not equal to $f(P)$, then prune the branch.
+Then we will have the following:
+  \begin{enumerate}
+  \item For every feasible placement $P$, $P$ can be constructed by some possible placement order by the algorithm with the pruning rule.
+  \item For every feasible placement $P$, there is exactly one placement order in which $P$ can be constructed.
+  \end{enumerate}
+\end{thm}
+\begin{proof}
+\begin{enumerate}
+\item
+This is clear as the items can be placed in the order $f(P)$ to construct the placement $P$ by the second property of the function $f$.
+\item
+This is also clear as $P$ cannot be constructed in any order other than $f(P)$.
+\end{enumerate}
+\end{proof}
+
+Thus, by properly defining an "ordering function" $f$, we will be able to create a pruning rule that ensures that each packing $P$ is explored no more than once. We thus define a function $f$ in the following manner:\\
+
+Take a tight packing $P$. Let $s_1,s_2,\cdots,s_m$ be the ordering of the $m$ placed objects given by $f(P)$. To define $s_k$, we consider the placement of $s_1,\cdots,s_{k-1}$. Out of all the remaining objects that can be "placed" while maintaining a tight packing, let $s_k$ be the one with minimum $y$. If there are ties, we pick the one with lowest $x$ value. Note that we compare the bottom left corners of the objects. By this construction, we ensure that property 2 will be satisfied by function $f$.\\
 
 \subsection{Experimental Results}
 
