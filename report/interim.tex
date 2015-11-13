@@ -36,7 +36,7 @@ Nguyen Quoc Dat\\
 
 \begin{abstract}
 \begin{center}
-The 2D Strip Packing problem is concerned with the minimum height of a fixed-width strip needed to pack a set of rectangles into the strip. In this report, we give a brief summary of the current state-of-the art, and experiment with the practical effectiveness of some of the existing algorithms.
+The 2D Strip Packing problem is concerned with the minimum height of a fixed-width strip needed to pack a set of rectangular object into the strip. In this report, we give a brief summary of the current state-of-the art, and experiment with the practical effectiveness of some of the existing algorithms.
 \end{center}
 \end{abstract}
 
@@ -50,7 +50,7 @@ This problem has many applications in the industry, like in manufacturing, where
 \section{State of the Art}
 The decision problem of Strip Packing easily shown to be NP-HARD via a reduction from the partition problem.\\
 \\
-Assuming $P \neq NP$, there is no absolute polynomial time approximation scheme for Strip Packing. In fact, there is no algorithm with an absolute approximation ratio better than $\frac{3}{2} - \epsilon$ as 1-dimensional bin-packing is a subproblem of strip packing (1-dimensional bin packing is equivalent to strip packing with rectangles of height $1$), and in 1-dimensional bin packing, it is NP-HARD to distinguish whether OPT is $2$ or $3$ due to a reduction from the Partition problem.\\
+Assuming $P \neq NP$, there is no absolute polynomial time approximation scheme for Strip Packing. In fact, there is no algorithm with an absolute approximation ratio better than $\frac{3}{2} - \epsilon$ as 1-dimensional bin-packing is a subproblem of strip packing (1-dimensional bin packing is equivalent to strip packing with objects of height $1$), and in 1-dimensional bin packing, it is NP-HARD to distinguish whether OPT is $2$ or $3$ due to a reduction from the Partition problem.\\
 \\
 The current best known absolute approximation algorithm has an approximation ratio of $\frac{5}{3} + \epsilon$ by Harren et. al. \cite{harren1}, which is close to the lower bound of $\frac{3}{2} - \epsilon$. On the other hand, asymptotic approximation algorithms do much better. Simple algorithms like First-Fit Decreasing Height and Split-Fit already achieve asymptotic approximation ratios of $\frac{17}{10}$ and $\frac{3}{2}$ respectively. The best known asymptotic approximation ratio for Strip Packing is $\frac{5}{4}$ by Baker et. al.  \cite{baker1}.\\
 
