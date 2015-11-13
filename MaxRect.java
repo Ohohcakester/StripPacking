@@ -481,9 +481,9 @@ public class MaxRect {
         buildSupportTrail(supportTrail, leftestDown);
         
         // Check for ordering
-        for (Rect inPlaceRect : inPlace) {
+        /*for (Rect inPlaceRect : inPlace) {
             if (!supportTrail[inPlaceRect.id] && inPlaceRect.y1 > attemptPlace.y1) return false;
-        }
+        }*/
         
         boolean[] currTrail = Arrays.copyOf(parentRect.pointerTrail, n);
         currTrail[parentRect.id] = true;

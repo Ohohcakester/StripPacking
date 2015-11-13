@@ -48,7 +48,7 @@ public class BruteForce extends StripPacking {
         for (int i = 0; i < floatingRects.length; i++) floatingRects[i].id = i;
         //Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
         //Arrays.sort(floatingRects, decreasingWidth);
-        Arrays.sort(floatingRects, decreasingWidthHeight);
+        //Arrays.sort(floatingRects, decreasingWidthHeight);
         n = floatingRects.length;
     }
     
@@ -90,9 +90,9 @@ public class BruteForce extends StripPacking {
         // System.out.println(placedRect);
         // System.out.println(bestHeight);
         intermediateHeight = placedRect.y2 > intermediateHeight ? placedRect.y2 : intermediateHeight;
-        if (intermediateHeight >= bestHeight) {
+        /*if (intermediateHeight >= bestHeight) {
             return 1; // pruned without exploring
-        }
+        }*/
         // System.out.println(inPlace);
         placed[frIndex] = true;
         inPlace.add(placedRect);
@@ -117,15 +117,15 @@ public class BruteForce extends StripPacking {
         }
         
         // Commentoutable check
-        for (int i = 0; i < newBoxes.size(); i++) {
+        /*for (int i = 0; i < newBoxes.size(); i++) {
             MaxRect currBox = newBoxes.get(i);
             for (int j = i + 1; j < newBoxes.size(); j++) {
                 MaxRect checkedBox = newBoxes.get(j);
                 if (currBox.x1 == checkedBox.x1 && currBox.y1 == checkedBox.y1 && currBox.x2 == checkedBox.x2 && currBox.y2 == checkedBox.y2) System.out.println("FUCK curr = " + currBox + " other = " + checkedBox);
             }
-        }
+        }*/
         
-        {
+        /*{
             // S = Medium Rectangle Pruning
             int sumWideRectangleHeights = 0;
             int wideRectanglesMinWidth = Integer.MAX_VALUE;
@@ -177,21 +177,21 @@ public class BruteForce extends StripPacking {
             }
             break;
         }
-        
+        */
         int bestDepth = 1;
         int k = 1;
         for (int i = 0; i < floatingRects.length; i++) {
             if (!placed[i]) {                            
                 if (k > bestDepth) {
                     //System.out.println("K-PRUNE: " + k + "/" + i + "/" + floatingRects.length);
-                    jumpOut(inPlace, placed, frIndex);
-                    return bestDepth;
+                    //jumpOut(inPlace, placed, frIndex);
+                    //return bestDepth;
                 }
                 for (MaxRect newBox : newBoxes) {
-                    if (intermediateHeight >= bestHeight) {
+                    /*if (intermediateHeight >= bestHeight) {
                         jumpOut(inPlace, placed, frIndex);
                         return bestDepth;
-                    }
+                    }*/
                     Rect attemptPlace = floatingRects[i].place(newBox.x1, newBox.y1);
                     attemptPlace.id = i;
                     // pass both candidate and parent

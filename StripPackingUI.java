@@ -100,16 +100,18 @@ public class StripPackingUI extends Application {
         root = new Group();
         Scene scene = new Scene(root, resX, resY, Color.WHITE);
 
-        TestCase testCase = getCaseGen("hahahahah.txt", 20, 900);  
+        //TestCase testCase = getCaseGen("hahahahah.txt", 14, 900);  
         //TestCase testCase = readFromFile("hahahahah.txt");
         //TestCase testCase = readFromFile("evil.txt");
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
         //TestCase testCase = getCaseGen("test.txt", 5, 40);
-        //TestCase testCase = readFromFile("test.txt");    
+        //TestCase testCase = readFromFile("test.txt");
+        TestCase testCase = readFromFile("evil2.txt");
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
         //StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
+
         StripPacking sp = new BruteForce(testCase.floatingRects, testCase.width);
 
         if (snapshotsOn) {
