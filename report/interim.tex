@@ -102,7 +102,7 @@ In other words, if all rectangles have width less than or equal to one third of 
 
 
 \section{Brute Force Algorithm}
-We describe an optimal solution for 2-D Strip Packing. The algorithm is based off the Maximal Rectangles (MAXRECT) algorithm \cite{rectanglebinpack}. We begin with a simple result:
+We describe an optimal solution for 2-D Strip Packing. The algorithm is based off the Maximal Rectangles (MAXRECT) algorithm \cite{maxrects}. We begin with a simple result:
 
 \begin{defn}
 For any feasible packing of a subset of objects, we call the packing tight if every object cannot be moved leftwards or downwards an infinitesimal amount. (i.e. it is touching another object or a boundary on both its left and bottom sides)
@@ -303,7 +303,17 @@ The most basic pruning rules are the upper bound and lower bound pruning rules o
 
 At any point of the algorithm, let $S$ be any subset of the remaining unplaced objects. Suppose that we can find a lower bound $L(S)$ for the minimum-height strip that can pack all of the objects in $S$. Let $h$ be the height of the lowest maximal rectangle that can fit some element in $S$. We can then prune the current branch if $L(S) + h \geq U$.
 
-% XXXXXXXX GIVE EXAMPLES OF LOWER BOUND
+Here are some ways in which these rules can be used:
+\begin{enumerate}
+\item Let $S$ be the set containing only the rectangle of maximum height. The lower bound $L(S)$ would thus be the height of $S$.
+
+\item Let $S$ be the set of all "wide" objects (objects with width stictly greater than half the width of the strip). As these objects can only be stacked directly on top of each other, the lower bound for $S$ would be the sum of the heights of the objects in $S$.
+
+\item Let $S$ be any subset of the remaining set (preferably the wider rectangles). We run the FFDH algorithm on only these rectangles, which has an approximation ratio of $1.7OPT + 1$. Suppose the FFDH algorithm returns a height of $T$. Thus we can obtain a lower bound for $S$ as $L(S) = \frac{T - 1}{1.7}$.
+\end{enumerate}
+
+As the third rule is unpromising due to $\frac{T-1}{1.7}$ not being a useful lower bound in most cases due to is low, and sometimes negative value, we only make use of rules 1 and 2 for our lower bound checks.
+
 
 \subsubsection{Symmetry Removal}
 As we are allowed to place the rectangles in any order, a common problem that occurs during our rectangle placement is repeat computations. For example, in figure \ref{fig:repeatplacements}, the rectangles $a,b,c,d$ can be placed in $4!$ possible orders, each corresponding to a different branch. As each of these packings are equivalent, only one of the packings need to be explored.\\ 
@@ -372,8 +382,6 @@ An example where this rule is effective is in figure \ref{fig:earlylowerbounds}.
 
 Without the rule, the algorithm would then proceed to try placing $s_3$ first, then $s_4$ first, and so on, continuing for a very long time before actually pruning this node.
 
-
-\subsection{Experimental Results}
 \section{Experimental Results}
 For problems of relatively small size (20 objects and below), our implementation of the branch-and-bound algorithm finds the optimal solution within a reasonable amount of time. For the 20-object case, the branch-and-bound algorithm completes after approximately 20 minutes on a Lenovo ThinkPad x230 running a 2.60 Ghz Intel i5 processor.\footnote{This machine was also used to carry out the rest of the experiments.} For our experiments, we consider cases with less than 20 objects as small instances, and cases with more than 20 rectangles as large instances.
 
@@ -384,6 +392,11 @@ For small instances, we can use the branch-and-bound algorithm to find the optim
 For large instances, we run only FFDH and Split-Fit against large datasets. We have 
 
 \begin{thebibliography}{9}
+\bibitem{maxrects}
+  Jukka Jylanki:
+  \emph{A Thousand Ways to Pack the Bin - A Pratical Approach to Two-Dimensional Rectangle Bin Packing},
+  retrived from http://clb.demon.fi/files/RectangleBinPack.pdf, 2010
+
 \bibitem{harren1}
   Harren, R., Jansen, K., Pradel, L., van Stee, R.:
   \emph{A (5/3 + $\epsilon$)-Approximation for Strip Packing},
