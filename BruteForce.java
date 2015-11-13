@@ -15,19 +15,26 @@ public class BruteForce extends StripPacking {
         if (fr1.width > fr2.width) return -1;
         return 0;
     };
+    public static Comparator<FloatingRect> decreasingWidthHeight = (fr1,fr2) -> {
+        if (fr1.width*fr1.height < fr2.width*fr2.height) return 1;
+        if (fr1.width*fr1.height > fr2.width*fr2.height) return -1;
+        return 0;
+    };
 
     public BruteForce(FloatingRect[] floatingRects, int width) {
         super(floatingRects, width);
         processFrects();
         // maxHeight is sum of all rectangle heights plus one. nothing goes to this height.
         maxHeight = Arrays.stream(floatingRects).map(floatingRect -> floatingRect.height).reduce(1, (a, b) -> a + b);
+
     }
     
     // assign IDs and sort by DH
     public void processFrects() {
         for (int i = 0; i < floatingRects.length; i++) floatingRects[i].id = i;
-        Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
+        //Arrays.sort(floatingRects, FirstFitDecreasingHeight.decreasingHeight);
         //Arrays.sort(floatingRects, decreasingWidth);
+        Arrays.sort(floatingRects, decreasingWidthHeight);
         n = floatingRects.length;
     }
     
@@ -126,6 +133,7 @@ public class BruteForce extends StripPacking {
         for (int i = 0; i < floatingRects.length; i++) {
             if (!placed[i]) {                            
                 if (k > bestDepth) {
+                    //System.out.println("K-PRUNE: " + k + "/" + i + "/" + floatingRects.length);
                     jumpOut(inPlace, placed, frIndex);
                     return bestDepth;
                 }
