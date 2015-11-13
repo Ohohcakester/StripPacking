@@ -4,8 +4,22 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{amsthm}
 
 \begin{document}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{corr}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{conj}{Conjecture}
+\newtheorem{exmp}{Example}
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem{case}{Case}
 
 \author{
 Oh Shunhao\\
@@ -87,7 +101,53 @@ We have implemented the FFDH and SF algorithms with visualisations. The visualis
   \label{fig:ffdhsfrun}
 \end{figure}
 
-\noindent
+\section{Brute Force Algorithm}
+We describe an optimal solution for 2-D Strip Packing. The algorithm is based off the Maximal Rectangles (MAXRECT) algorithm \cite{rectanglebinpack}. We begin with a simple result:
+
+\begin{defn}
+For any feasible packing of a subset of objects, we call the packing tight if every object cannot be moved leftwards or downwards an infinitesimal amount. (i.e. it is touching another object or a boundary on both its left and bottom sides)
+\begin{defn}
+
+\begin{thm}
+There exists an optimal solution which is tight.
+\end{thm}
+This is clear as from any optimal solution, we can always move any object leftwards or downwards without increasing the total height, until no object can be moved leftwards or downwards any further.\\
+
+In the MAXRECT algorithm, we place each object sequentially, to construct a feasible solution, while maintaining that the current placement is tight at each step. When we have placed all rectangles, the total height of the rectangles is noted. An exhaustive search of all tight packings is done, to find the tight packing of minimum height.
+
+\begin{defn}
+A Free Rectangle is defined as any rectangle that covers open space. (i.e. it does not intersect any existing object)
+\end{defn}
+
+\begin{defn}
+A Maximal Free Rectangle (Maximal Rectangle) is a Free Rectangle that is not a subset of any other Free Rectangle.
+\end{defn}
+
+To do this, we maintain a list of Maximal Rectangles that represent the possible positions one can place the next rectangle. Each Maximal Rectangle represents an area of open space where objects can be placed. By theorem \ref{thm:blmaxrect} each possible object placement position corresponds to placing the object at the bottom left of some maximal rectangle. This also shows that we are able to construct any tight packing using this method.
+
+\begin{thm}
+\label{thm:blmaxrect}
+When placing a new object $r$ on a currently tight packing $P$, if the new placking is tight, then $r$ is at the bottom left corner of some maximal rectangle in packing $P$.
+\end{thm}
+\begin{proof}
+If the new packing is tight, the new object cannot be moved leftwards or downwards. We can thus construct a free rectangle covering the object exactly. The free rectangle cannot be extended leftwards or downwards as the original object was obstructed in those directions. We can thus extend the width rightwards, then height upwards to the maximum possible to make it maximal.
+\end{proof}
+
+We note that to maintain the tightness property of the packing, we will need to additionally check that there newly placed object is touching another object (or boundary) on both its bottom and left sides. If the new object fails this check, we do not consider this possible placement. For example, in Figure \ref{fig:floatingmaxrect}, the new packing is no longer tight, even though the new rectangle has been placed in the bottom left corner of a maximal free rectangle.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.5\linewidth]{FFDHrun.png}
+  \caption{THE}
+  \label{fig:floatingmaxrect}
+\end{figure}
+
+
+
+
+
+XXXXXXXXXX
+
 Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\\
 \\
 With the use of FFDH and SF, we can then derive upper and lower bounds for the exhaustive search, from which we hope to create a branch-and-bound algorithm to solve 2-D Strip Packing.

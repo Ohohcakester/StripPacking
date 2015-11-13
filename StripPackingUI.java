@@ -104,7 +104,8 @@ public class StripPackingUI extends Application {
         TestCase testCase = readFromFile("evil.txt");
         //TestCase testCase = readStdinTestCase();   
         //TestCase testCase = getTestCase();
-        //TestCase testCase = getCaseGen("test.txt", 6, 18);
+        //TestCase testCase = getCaseGen("test.txt", 5, 40);
+        //TestCase testCase = readFromFile("test.txt");    
         //StripPacking sp = new StripPacking(testCase.floatingRects, testCase.width);
         //StripPacking sp = new FirstFitDecreasingHeight(testCase.floatingRects, testCase.width);
         //StripPacking sp = new SplitFit(testCase.floatingRects, testCase.width);
