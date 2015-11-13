@@ -26,7 +26,17 @@ public class BruteForce extends StripPacking {
         processFrects();
         // maxHeight is sum of all rectangle heights plus one. nothing goes to this height.
         maxHeight = Arrays.stream(floatingRects).map(floatingRect -> floatingRect.height).reduce(1, (a, b) -> a + b);
+        System.out.println("Add all heights: " + maxHeight + " - 1");
 
+        StripPacking algo = new FirstFitDecreasingHeight(floatingRects, width);
+        algo.execute();
+        System.out.println("FFDH: " + (algo.height + 1) + " - 1");
+        maxHeight = Math.min(maxHeight, algo.height + 1);
+
+        algo = new SplitFit(floatingRects, width);
+        algo.execute();
+        System.out.println("SF: " + (algo.height + 1) + " - 1");
+        maxHeight = Math.min(maxHeight, algo.height + 1);
     }
     
     // assign IDs and sort by DH
@@ -92,6 +102,7 @@ public class BruteForce extends StripPacking {
             jumpOut(inPlace, placed, frIndex);
             return 1;
         }
+
         
         ArrayList<MaxRect> newBoxes = new ArrayList<MaxRect>();
         for (MaxRect box : boxes) {
