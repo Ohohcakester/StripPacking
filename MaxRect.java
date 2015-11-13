@@ -454,34 +454,12 @@ public class MaxRect {
 
         newMaxRectList.add(newMaxRect);
     }
-    
+
     public boolean fits(Rect attemptPlace, Rect parentRect, ArrayList<Rect> inPlace, int n) {
         if (this.height < attemptPlace.height || this.width < attemptPlace.width) return false;
         // System.out.println("Attempting " + attemptPlace);
         
-        /*
         boolean[] supportTrail = new boolean[n]; // Compute the support trail while checking
-        boolean hasLeftSupport = false;
-        for (Rect leftSupportRect : leftSupport) {
-            if (attemptPlace.touchLeft(leftSupportRect)) {
-                // System.out.println(leftSupportRect + " " + leftSupportRect.id);
-                hasLeftSupport = true;
-                buildSupportTrail(supportTrail, leftSupportRect);
-            }
-        }
-        if (!hasLeftSupport) return false;
-        
-        boolean hasDownSupport = false;
-        for (Rect downSupportRect : downSupport) {
-            if (attemptPlace.touchBottom(downSupportRect)) {
-                // System.out.println(downSupportRect + " " + downSupportRect.id);
-                hasDownSupport = true;
-                buildSupportTrail(supportTrail, downSupportRect);
-            }
-        }
-        if (!hasDownSupport) return false;*/
-        
-        boolean[] supportTrail = new boolean[n];
         Rect lowestLeft = null;
         for (Rect leftSupportRect : leftSupport) {
             if (attemptPlace.touchLeft(leftSupportRect)) {
