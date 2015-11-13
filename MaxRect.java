@@ -73,7 +73,7 @@ public class MaxRect {
             // Rect barely touching on left. Deep copy and add new rect to left support list.
             MaxRect newMaxRect = new MaxRect(this);
             newMaxRect.leftSupport.add(newRect);
-            newMaxRectList.add(this);
+            newMaxRectList.add(newMaxRect);
             return true;
         }
         if (this.x2 == newRect.x1) {
@@ -85,21 +85,21 @@ public class MaxRect {
             // Rect barely touching on right. Deep copy and add new rect to right support list.
             MaxRect newMaxRect = new MaxRect(this);
             newMaxRect.rightSupport.add(newRect);
-            newMaxRectList.add(this);
+            newMaxRectList.add(newMaxRect);
             return true;
         }
         if (this.y1 == newRect.y2) {
             // Rect barely touching on bottom. Deep copy and add new rect to down support list.
             MaxRect newMaxRect = new MaxRect(this);
             newMaxRect.downSupport.add(newRect);
-            newMaxRectList.add(this);
+            newMaxRectList.add(newMaxRect);
             return true;
         }
         if (this.y2 == newRect.y1) {
             // Rect barely touching on top. Deep copy and add new rect to up support list.
             MaxRect newMaxRect = new MaxRect(this);
             newMaxRect.upSupport.add(newRect);
-            newMaxRectList.add(this);
+            newMaxRectList.add(newMaxRect);
             return true;
         }
 
