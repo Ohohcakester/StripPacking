@@ -9,6 +9,8 @@ public class BruteForce extends StripPacking {
     public int bestHeight;
     public ArrayList<Rect> bestSol;
     public int n;
+
+    private int wideWidth;
     
     public static Comparator<FloatingRect> decreasingWidth = (fr1,fr2) -> {
         if (fr1.width < fr2.width) return 1;
@@ -24,6 +26,8 @@ public class BruteForce extends StripPacking {
     public BruteForce(FloatingRect[] floatingRects, int width) {
         super(floatingRects, width);
         processFrects();
+        wideWidth = width/2 + 1;
+
         // maxHeight is sum of all rectangle heights plus one. nothing goes to this height.
         maxHeight = Arrays.stream(floatingRects).map(floatingRect -> floatingRect.height).reduce(1, (a, b) -> a + b);
         System.out.println("Add all heights: " + maxHeight + " - 1");
@@ -121,9 +125,44 @@ public class BruteForce extends StripPacking {
             }
         }
         
+        {
+            // S = Medium Rectangle Pruning
+            int sumWideRectangleHeights = 0;
+            int wideRectanglesMinWidth = Integer.MAX_VALUE;
+            for (int i = 0; i < floatingRects.length; i++) {
+                if (placed[i]) continue;
+                if (floatingRects[i].width >= wideWidth) {
+                    sumWideRectangleHeights += floatingRects[i].height;
+                    if (floatingRects[i].width < wideRectanglesMinWidth) {
+                        wideRectanglesMinWidth = floatingRects[i].width;
+                    }
+                }
+            }
+
+            // Find the lowest box we can fit into.
+            int minPlacementHeight = Integer.MAX_VALUE;
+            for (MaxRect newBox : newBoxes) {
+                if (wideRectanglesMinWidth <= newBox.width) {
+                    if (newBox.y1 < minPlacementHeight) {
+                        minPlacementHeight = newBox.y1;
+                    }
+                }
+            }
+
+            if (wideRectanglesMinWidth != Integer.MAX_VALUE) {
+                // There is at least one wide rectangle.
+                if (minPlacementHeight + sumWideRectangleHeights >= bestHeight) {
+                    //System.out.println("MEDIUM RECTANGLES PRUNE!");
+                    jumpOut(inPlace, placed, frIndex);
+                    return 1;
+                }
+            }
+        }
+
         for (int i = 0; i < floatingRects.length; i++) {
             if (placed[i]) continue;
             boolean lbPrune = true;
+
             for (MaxRect newBox : newBoxes) { // search for lowest box that the tallest can fit in without exceeding upper bound
                 Rect attemptTallest = floatingRects[i].place(newBox.x1, newBox.y1);
                 if (attemptTallest.y2 < bestHeight && newBox.fits(attemptTallest, placedRect, inPlace, n)) {
