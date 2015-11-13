@@ -136,12 +136,25 @@ public class StripPackingUI extends Application {
         if (snapshotsOn) {
             System.out.println("Total Snapshot Calls: " + nSnapshotCalls);
             scene.setOnKeyPressed(event -> {
-                if (event.getCode().equals(KeyCode.A) || event.getCode().equals(KeyCode.LEFT)) {
-                    currentSnapshot--;
-                    if (currentSnapshot < 0) currentSnapshot = snapshots.size()-1;
-                } else {
-                    currentSnapshot++;
-                    if (currentSnapshot >= snapshots.size()) currentSnapshot = 0;
+                switch(event.getCode()) {
+                    case A:
+                    case LEFT:
+                        currentSnapshot--;
+                        if (currentSnapshot < 0) currentSnapshot = snapshots.size()-1;
+                        break;
+                    case D:
+                    case RIGHT:
+                        currentSnapshot++;
+                        if (currentSnapshot >= snapshots.size()) currentSnapshot = 0;
+                        break;
+                    case E:
+                        currentSnapshot+=500;
+                        if (currentSnapshot >= snapshots.size()) currentSnapshot = snapshots.size() - 1;
+                        break;
+                    case Q:
+                        currentSnapshot-=500;
+                        if (currentSnapshot < 0) currentSnapshot = 0;
+                        break;
                 }
                 System.out.println(currentSnapshot + ": SNAPSHOT with height " + snapshotHeights.get(currentSnapshot));
                 redraw(snapshots.get(currentSnapshot), testCase.width, snapshotHeights.get(currentSnapshot));
