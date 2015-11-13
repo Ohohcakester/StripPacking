@@ -345,13 +345,40 @@ Thus, by properly defining an "ordering function" $f$, we will be able to create
 Take a tight packing $P$. Let $s_1,s_2,\cdots,s_m$ be the ordering of the $m$ placed objects given by $f(P)$. To define $s_k$, we consider the placement of $s_1,\cdots,s_{k-1}$. Out of all the remaining objects that can be "placed" while maintaining a tight packing, let $s_k$ be the one with minimum $y$. If there are ties, we pick the one with lowest $x$ value. Note that we compare the bottom left corners of the objects. By this construction, we ensure that property 2 will be satisfied by function $f$.
 
 \subsubsection{Early Discovery of Lower Bounds}
-asd
+We can derive an additional lower-bound pruning rule using the following theorem:
 
+\begin{thm}
+Let $P$ be the current packing and $S$ be a subset of the remaining unpacked objects. Suppose that any tight placement of rectangles in $S$ into $P$ has height at least $U$. Then there is no placement of the remaining unpacked objects onto $P$ with height less than $U$.
+\end{thm}
+\begin{proof}
+This is clear as from any packing of the remaining objects with height less than $U$, all remaining objects not in $S$ can be removed, and the objects in $S$ can be shifted left and down to make a tight packing with height less than $U$.
+\end{proof}
+
+Thus, we use the following search order: we iterate through the objects in a fixed order (e.g. by index). For each object, we try to fit it into each of the maximal rectangles, before moving on to the next unplaced rectangle.\\
+
+This way, we can apply the following pruning rule:\\
+Consider the current search node (corresponding to some packing $P$) with $m$ remaining unplaced objects $\{s_1,s_2,\cdots,s_m\}$, that will be fitted in the order $s_1,s_2,\cdots,s_m$. For any $k \in \{1,\cdots,m-1\}$, if trying to place the objects $s_1,\cdots,s_k$ each produces a recursion depth of at most $k$, we can prune the current node without attempting to place the objects $s_{k+1}$ onwards.\\
+
+This works because from the fixed order of placing objects, as the recursion depths are at most $k$, all possible combinations of trying to place objects $s_1,s_2,\cdots,s_k$ must have failed, meaning that it is impossible to place $s_1,\cdots,s_k$ onto packing $P$ without the remaining height being at least the upper bound $U$. Note, however, that this pruning rule does not work with existing pruning rules, as this rule assumes that pruning only occurs when the current total height is at least the upper bound $U$.\\
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=.4\linewidth]{diagrams/earlylowerbounds.png}
+  \caption{An example where the early lower-bound pruning rule is effective.}
+  \label{fig:earlylowerbounds}
+\end{figure}
+
+An example where this rule is effective is in figure \ref{fig:earlylowerbounds}. In the figure, the gray rectangles are the current placement $P$, and the green rectangles $s_1,\cdots,s_6$ are the yet unplaced rectangles. We place the rectangles in the order $s_1,s_2,s_3,s_4,s_5,s_6$. We note that the algorithm will first try placing $s_1$, then $s_2$, fail as it exceeds the upper bound $U$, then try placing $s_2$, then $s_1,$ and fail as it once again exceeds the upper bound $U$. At this point, we can already deduce that it is impossible to fit $s_1$ and $s_2$ into the current formation without the total height being at least $U$. The rule would thus prune at this point with $k = 2$.\\
+
+Without the rule, the algorithm would then proceed to try placing $s_3$ first, then $s_4$ first, and so on, continuing for a very long time before actually pruning this node.
+
+
+\subsection{Experimental Results}
 \section{Experimental Results}
 For problems of relatively small size (20 objects and below), our implementation of the branch-and-bound algorithm finds the optimal solution within a reasonable amount of time. For the 20-object case, the branch-and-bound algorithm completes after approximately 20 minutes on a Lenovo ThinkPad x230 running a 2.60 Ghz Intel i5 processor.\footnote{This machine was also used to carry out the rest of the experiments.} For our experiments, we consider cases with less than 20 objects as small instances, and cases with more than 20 rectangles as large instances.
 
 \subsection{Small instances}
-For small instances, we can use the branch-and-bound algorithm to find the optimal solution. Thus, we can determine whether the two approximation algorithms mentioned in section 3 (FFDH and Split-Fit) do as well as their theoretical approximation ratios. For the extremely small instances (7 to 10 rectangles), we run the three algorithms together for 10000 randomly-generated instances, and calculate their approximation ratios. Table 1 shows the result on our 
+For small instances, we can use the branch-and-bound algorithm to find the optimal solution. Thus, we can determine whether the two approximation algorithms mentioned in section 3 (FFDH and Split-Fit) do as well as their theoretical approximation ratios. For the extremely small instances (7 to 10 rectangles), we run the three algorithms together for 10000 randomly-generated instances, and calculate their approximation ratios. 
 
 \subsection{Large instances}
 For large instances, we run only FFDH and Split-Fit against large datasets. We have 
