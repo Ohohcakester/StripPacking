@@ -58,7 +58,7 @@ The current best known absolute approximation algorithm has an approximation rat
 Many existing approximation algorithms for 2-D Strip Packing are level-oriented algorithms. Level-oriented algorithms involve packing items into shelves of certain heights. These algorithms include First-Fit Decreasing Height, and Split-Fit.
 \subsection{First-Fit Decreasing Height}
 \textit{First-Fit Decreasing Height} (FFDH) places the objects in decreasing height order one by one on the bottom of the strip. When an object cannot be placed on the bottom the strip, a new shelf is created from the top y-coordinate of the leftmost (tallest) object of the topmost shelf.\\
-\\
+
 For a given list $L$ of objects, the performance of FFDH is bounded by the following:
 \[
 	FFDH(L) \leq 1.7 \times OPT(L) + 1
@@ -73,7 +73,7 @@ The proof for the approximation ratio of FFDH is based on the proof of the appro
 Then, the objects in $L_1$ are packed using FFDH. The resulting shelves produced are then rearranged by width, such that all shelves with width more than $\frac{m+1}{m+2}$ are below shelves with width less than or equal to $\frac{m+1}{m+2}$. This results in a free rectangle $R$ of width $\frac{1}{m+2}$ to the right of the shelves with width less than or equal to $\frac{m+1}{m+2}$.\\
 \\
 We then proceed to pack objects in $L_2$ into R, treating it as a strip of width $\frac{1}{m+2}$. However, if a new shelf is to be created, and it exceeds the height of R, then it is placed on top of the shelves from $L_1$ with width less than or equal to $\frac{m+1}{m+2}$, and thus allows the full width of the original strip. This continues until all objects have been packed.\\
-\\
+
 The performance of SF is bounded by the value of $m$:
 \[
 	SF(L) \leq \frac{m+2}{m+1}OPT(L) + 2
@@ -84,13 +84,13 @@ In other words, if all objects have width less than or equal to one third of the
 \]
 \begin{figure}[ht]
 \centering
-\begin{subfigure}{.35\textwidth}
+\begin{subfigure}[b]{.35\textwidth}
   \centering
   \includegraphics[width=.5\linewidth]{FFDHrun.png}
   \caption{FFDH Algorithm}
   \label{fig:ffdhrun}
 \end{subfigure}%
-\begin{subfigure}{.35\textwidth}
+\begin{subfigure}[b]{.35\textwidth}
   \centering
   \includegraphics[width=.5\linewidth]{SplitFitrun.png}
   \caption{Split-Fit Algorithm}
@@ -393,7 +393,7 @@ Furthermore, we observed that the running time behind the branch-and-bound algor
 \\
 We believe that this is because the large area of the initial rectangles provides less room for other rectangles to fit in, and thus they can either improve the currently optimal value, or be pruned early by either a \textit{best-solution-so-far} upper bound or the lower bound found by Theorem \ref{thm:kprune}. Thus, we would reach better heights, and thus be able to prune cases, faster.\\
 \\
-For small instances, we used randomly generated small instances to evaluate the performance of the branch-and-bound algorithm. While instances of less than 10 rectangles all terminate in near instant time for all three sorting orders, the difference in performance obtained by varying the initial sorting order grows more significant as the test cases increase, as seen in Table \ref{table:smallinstances}. "DNT" denotes an impractically long amount of time taken (more than 20 minutes) to terminate.
+For small instances, we used randomly generated small instances to evaluate the performance of the branch-and-bound algorithm. While instances of less than 10 rectangles all terminate in near instant time for all three sorting orders, the difference in performance obtained by varying the initial sorting order grows more significant as the test cases increase, as seen in Table \ref{table:smallinstances}. $DNT$ denotes an impractically long amount of time taken (more than 20 minutes) to terminate.
 
 \begin{table}[!h]
 \centering
@@ -409,33 +409,33 @@ For small instances, we used randomly generated small instances to evaluate the 
 \caption{Running time (in seconds) of branch-and-bound algorithm with exploration orders}
 \label{table:smallinstances}
 \end{table}
-
+\noindent
 From the above data, it can be seen that while the performance of the algorithm is very instance-dependent in general, exploring the objects in decreasing area order is generally faster than decreasing height or decreasing width.\\
 \\
 We also present a visualization of a 20-rectangle packing by the branch-and-bound algorithm with decreasing-area exploration order, together with the packing result of FFDH and Split-Fit of the same instance:
 
 \begin{figure}[!h]
 \centering
-\begin{subfigure}{.35\textwidth}
+\begin{subfigure}[b]{.35\textwidth}
   \centering
-  \includegraphics[width=.5\linewidth]{FFDHrun.png}
+  \includegraphics[width=.5\linewidth]{diagrams/BruteForceFit20.png}
   \caption{Branch-and-bound}
 \end{subfigure}%
-\begin{subfigure}{.35\textwidth}
+\begin{subfigure}[b]{.35\textwidth}
   \centering
-  \includegraphics[width=.5\linewidth]{SplitFitrun.png}
+  \includegraphics[width=.5\linewidth]{diagrams/FFDH20Rects.png}
   \caption{FFDH}
 \end{subfigure}%
-\begin{subfigure}{.35\textwidth}
+\begin{subfigure}[b]{.35\textwidth}
   \centering
-  \includegraphics[width=.5\linewidth]{SplitFitrun.png}
+  \includegraphics[width=.5\linewidth]{diagrams/SplitFit20Rects.png}
   \caption{Split-Fit}
 \end{subfigure}
-  \caption{20-rectangle packing}
+  \caption{A 20-rectangle packing}
 \end{figure}
 
 \subsection{Large instances}
-To test the effectiveness of the FFDH and Split-Fit heuristic algorithms, we run them on large datasets. The dataset used is Zhang et al.'s ZDF dataset, which is generated by combining zero-waste and nonzero-waste data \cite{zdf}. We find that, even though Split-Fit has a slightly better asymptotic approximation ratio than FFDH, it does worse than FFDH in most of the test cases given Table \ref{table:zdftest}.
+To test the effectiveness of the FFDH and Split-Fit heuristic algorithms, we run them on large datasets. The dataset used is Zhang et al.'s ZDF dataset, which is generated by combining zero-waste and nonzero-waste data \cite{zdf}. We find that even though Split-Fit has a slightly better asymptotic approximation ratio than FFDH, it does worse than FFDH in most of the test cases given Table \ref{table:zdftest}.
 
 \begin{table}[!h]
 \centering
@@ -462,9 +462,17 @@ To test the effectiveness of the FFDH and Split-Fit heuristic algorithms, we run
 \caption{FFDH and Split-Fit's performance on Zhang et al.'s dataset.}
 \label{table:zdftest}
 \end{table}
+\noindent
+Surprisingly, the simplicity of FFDH seems to beat the relatively complex Split-Fit algorithm. We conjecture that this may be because FFDH attempts to fill up all shelves from bottom to top, whereas Split-Fit ignores the shelves made by the larger $L_1$ objects after placing them and forming the rectangle $R$, when in reality this space can still be utilized for smaller objects. Furthermore, there might be instances where objects with width between $\frac{1}{m+1}$ and $\frac{m+1}{m+2}$ have very low height. These objects' shelves, which define the size of the rectangle $R$ in Split-Fit, may cause the entire space of the rectangle R to go unused.\\
+\\
+We can say that Split-Fit attempts to optimize width before height, and in the process causing the solution to be much more suboptimal. Indeed, from the branch-and-bound algorithm, we can see that exploring object placement in order of decreasing area takes a very short time, which suggests that the explored solutions are found to be bad - and thus pruned - very early. Thus, it may be better to consider only the height of the objects to be placed, as in FFDH, instead of both height of width of the objects.
 
 \section{Conclusion}
-Seth is handsome
+We have presented our implementation of three algorithms to solve the 2D Strip-Packing algorithm. The two well-known approximation algorithms produce interesting results, in which Split-Fit, the algorithm with a seemingly better approximation ratio, consistently performs worse than First-Fit Decreasing Height.\\
+\\
+We have also developed a method to exhaustively search the solution space of the 2D Strip-Packing algorithm for an optimal solution, as well as several methods of pruning for the maximum-rectangles exponential branch-and-bound algorithm. At the same time, we also discovered the significance of exploration order in assting the branch-and-bound algorithm to quickly traverse the solution space. Hopefully, these observations and methods can be used to develop a better branch-and-bound method to solve real-life 2D Strip Packing problems in a practical amount of time.\\
+\\
+The exhaustive search algorithm, as well as its pruning methods, may also be adapted for the problems of 2D Bin Packing, as well as item-packing in higher dimensions, which also have many real-life practical applications.
 
 \begin{thebibliography}{9}
 \bibitem{harren1}
