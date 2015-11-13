@@ -29,7 +29,7 @@ Oh Shunhao\\
 Nguyen Quoc Dat\\
   \texttt{A0116703N}
 }
-\title{CS4234: 2D Strip Packing - Interim Report}
+\title{CS4234: 2D Strip Packing}
 \date{}
 
 \maketitle
@@ -41,9 +41,9 @@ The 2D Strip Packing problem is concerned with the minimum height of a fixed-wid
 \end{abstract}
 
 \section{Problem Definition}
-In the Strip Packing problem, we are given an infinitely tall strip, of maximum width $W$, and a set of $n$ rectangles $s_1,s_2,\cdots,s_n$, each represented by a tuple $s_i = (w_i,h_i)$, representing the width and height of each rectangle.\\
+In the Strip Packing problem, we are given an infinitely tall strip, of maximum width $W$, and a set of $n$ rectangular objects $s_1,s_2,\cdots,s_n$, each represented by a tuple $s_i = (w_i,h_i)$, representing the width and height of each object.\\
 \\
-The task is to pack all of the $n$ rectangles into the strip, so that none of the rectangles overlap, and such that the total height of the strip is minimised.\\
+The task is to pack all of the $n$ objects into the strip, so that none of the objects overlap, and such that the total height of the strip is minimised.\\
 \\
 This problem has many applications in the industry, like in manufacturing, where rectangular pieces need to be cut out of a strip of fixed width, or perhaps in sprite packing for games, where fixed-size sprites can be packed into a single image to minimise the memory footprint of a game.\\
 
@@ -57,28 +57,28 @@ The current best known absolute approximation algorithm has an approximation rat
 \section{Existing algorithms}
 Many existing approximation algorithms for 2-D Strip Packing are level-oriented algorithms. Level-oriented algorithms involve packing items into shelves of certain heights. These algorithms include First-Fit Decreasing Height, and Split-Fit.
 \subsection{First-Fit Decreasing Height}
-\textit{First-Fit Decreasing Height} (FFDH) places the rectangles in decreasing height order one by one on the bottom of the strip. When a rectangle cannot be placed on the bottom the strip, a new shelf is created from the top y-coordinate of the leftmost (tallest) rectangle of the topmost shelf.\\
+\textit{First-Fit Decreasing Height} (FFDH) places the objects in decreasing height order one by one on the bottom of the strip. When an object cannot be placed on the bottom the strip, a new shelf is created from the top y-coordinate of the leftmost (tallest) object of the topmost shelf.\\
 \\
-For a given list $L$ of rectangles, the performance of FFDH is bounded by the following:
+For a given list $L$ of objects, the performance of FFDH is bounded by the following:
 \[
 	FFDH(L) \leq 1.7 \times OPT(L) + 1
 \]
 The proof for the approximation ratio of FFDH is based on the proof of the approximation ratio for the First-Fit algorithm for the one-dimensional bin packing problem, which is also asymptotically 1.7-approximate.
 \subsection{Split-Fit}
-\textit{Split-Fit} (SF) also sorts the rectangles by decreasing height. We find $m \geq 1$, which is the maximum integer such that all given rectangles have width less than or equal to $\frac{1}{m}$. The rectangles are then divided into two sets $L_1$ and $L_2$:
+\textit{Split-Fit} (SF) also sorts the objects by decreasing height. We find $m \geq 1$, which is the maximum integer such that all given objects have width less than or equal to $\frac{1}{m}$. The objects are then divided into two sets $L_1$ and $L_2$:
 \begin{itemize}
-\item $L_1$ contains rectangles with width greater than $\frac{1}{m+1}$.
-\item $L_2$ contains rectangles with width less than or equal to $\frac{1}{m+1}$.
+\item $L_1$ contains objects with width greater than $\frac{1}{m+1}$.
+\item $L_2$ contains objects with width less than or equal to $\frac{1}{m+1}$.
 \end{itemize}
-Then, the rectangles in $L_1$ are packed using FFDH. The resulting shelves produced are then rearranged by width, such that all shelves with width more than $\frac{m+1}{m+2}$ are below shelves with width less than or equal to $\frac{m+1}{m+2}$. This results in a free rectangle $R$ of width $\frac{1}{m+2}$ to the right of the shelves with width less than or equal to $\frac{m+1}{m+2}$.\\
+Then, the objects in $L_1$ are packed using FFDH. The resulting shelves produced are then rearranged by width, such that all shelves with width more than $\frac{m+1}{m+2}$ are below shelves with width less than or equal to $\frac{m+1}{m+2}$. This results in a free rectangle $R$ of width $\frac{1}{m+2}$ to the right of the shelves with width less than or equal to $\frac{m+1}{m+2}$.\\
 \\
-We then proceed to pack rectangles in $L_2$ into R, treating it as a strip of width $\frac{1}{m+2}$. However, if a new shelf is to be created, and it exceeds the height of R, then it is placed on top of the shelves from $L_1$ with width less than or equal to $\frac{m+1}{m+2}$, and thus allows the full width of the original strip. This continues until all rectangles have been packed.\\
+We then proceed to pack objects in $L_2$ into R, treating it as a strip of width $\frac{1}{m+2}$. However, if a new shelf is to be created, and it exceeds the height of R, then it is placed on top of the shelves from $L_1$ with width less than or equal to $\frac{m+1}{m+2}$, and thus allows the full width of the original strip. This continues until all objects have been packed.\\
 \\
 The performance of SF is bounded by the value of $m$:
 \[
 	SF(L) \leq \frac{m+2}{m+1}OPT(L) + 2
 \]
-In other words, if all rectangles have width less than or equal to one third of the strip width, then $m = 3$, and thus the performance bound for SF is $\frac{5}{4}OPT + 2$. However, in the worst case where $m = 1$ i.e. there exists at least one rectangle with width larger than $\frac{1}{2}$, the approximation ratio for SF is:
+In other words, if all objects have width less than or equal to one third of the strip width, then $m = 3$, and thus the performance bound for SF is $\frac{5}{4}OPT + 2$. However, in the worst case where $m = 1$ i.e. there exists at least one object with width larger than $\frac{1}{2}$, the approximation ratio for SF is:
 \[
 	SF(L) \leq \frac{3}{2}OPT(L) + 2
 \]
@@ -286,7 +286,7 @@ This is easy to see, as for each of the cases shown in figure \ref{fig:maxrectsp
 
 There are two other cases we need to consider for maintaining the support lists of each maximal rectangle correctly. Firstly, for the maximal rectangle created at the start of the algorithm, we can initialise each of its support lists to be empty, as it is touching all four of the boundaries of the strip. Secondly, if a newly-placed object happens to be touching an existing maximal rectangle at a boundary, we need to add the newly-placed object to the support of the maximal rectangle. This check can be done at the same time as when we are checking whether the newly placed object intersects any maximal rectangles.\\
 
-Thus, through this method, we are able to maintain a list of the maximal rectangles at any point of the algorithm. At each node in the search tree, for each unplaced object and for each maximal rectangle, if we can place the object into the maximal rectangle (the object's dimensions fits into the boundaries of the maximal rectangle), we try placing that object into that maximal rectangle. Thus, we have created a brute-force algorithm that searches through all possible tight packings, and thus will be able to find an optimal solution for the 2-D Strip Packing problem.\\
+Thus, through this method, we are able to maintain a list of the maximal rectangles at any point of the algorithm. At each node in the search tree, for each unplaced object and for each maximal rectangle, if we can place the object into the maximal rectangle (the object's dimensions fits into the boundaries of the maximal rectangle), we try placing that object into that maximal rectangle. Thus, we have created a brute-force algorithm that searches through all possible tight packings, and thus will be able to find an optimal solution for the 2-D Strip Packing problem.
 
 \subsection{Asymptotic Analysis of Running Time}
 We let the number of rectangles to be fitted by $n$.\\
@@ -298,7 +298,7 @@ This makes a total running time of $\displaystyle\sum_{m=0}^{n-1} (\prod_{k=1}^{
 
 \subsection{Pruning Rules}
 
-\subsubsection{Branch and Bound}
+\subsubsection{Branch and Bound} \label{sssec:branchandbound}
 The most basic pruning rules are the upper bound and lower bound pruning rules of branch and bound. At all times, we maintain an upper-bound value $U$. We initialise $U$ to a known upper bound (for example, the sum of the heights of the rectangles, or the solution found by a heuristic algorithm like FFDH). Whenever we find a feasible solution of total height less than $U$, we update the value of $U$ to the height of the solution found. Now, at any point of the algorithm, if the current total height of the placement $P$, $height(P) \geq U$, we can prune the current branch.\\
 
 At any point of the algorithm, let $S$ be any subset of the remaining unplaced objects. Suppose that we can find a lower bound $L(S)$ for the minimum-height strip that can pack all of the objects in $S$. Let $h$ be the height of the lowest maximal rectangle that can fit some element in $S$. We can then prune the current branch if $L(S) + h \geq U$.
@@ -358,6 +358,7 @@ Take a tight packing $P$. Let $s_1,s_2,\cdots,s_m$ be the ordering of the $m$ pl
 We can derive an additional lower-bound pruning rule using the following theorem:
 
 \begin{thm}
+\label{thm:kprune}
 Let $P$ be the current packing and $S$ be a subset of the remaining unpacked objects. Suppose that any tight placement of rectangles in $S$ into $P$ has height at least $U$. Then there is no placement of the remaining unpacked objects onto $P$ with height less than $U$.
 \end{thm}
 \begin{proof}
@@ -383,13 +384,31 @@ An example where this rule is effective is in figure \ref{fig:earlylowerbounds}.
 Without the rule, the algorithm would then proceed to try placing $s_3$ first, then $s_4$ first, and so on, continuing for a very long time before actually pruning this node.
 
 \section{Experimental Results}
-For problems of relatively small size (20 objects and below), our implementation of the branch-and-bound algorithm finds the optimal solution within a reasonable amount of time. For the 20-object case, the branch-and-bound algorithm completes after approximately 20 minutes on a Lenovo ThinkPad x230 running a 2.60 Ghz Intel i5 processor.\footnote{This machine was also used to carry out the rest of the experiments.} For our experiments, we consider cases with less than 20 objects as small instances, and cases with more than 20 rectangles as large instances.
+For problems of relatively small size (20 objects and below), our implementation of the branch-and-bound algorithm finds the optimal solution within a reasonable amount of time. For the 20-object case, the branch-and-bound algorithm completes after approximately 10 minutes on a Lenovo ThinkPad x230 running a 2.60 Ghz Intel i5 processor.\footnote{This machine was also used to carry out the rest of the experiments.} For our experiments, we consider cases below 20 objects as small instances, and cases with more than 20 rectangles as large instances.
 
 \subsection{Small instances}
-For small instances, we can use the branch-and-bound algorithm to find the optimal solution. Thus, we can determine whether the two approximation algorithms mentioned in section 3 (FFDH and Split-Fit) do as well as their theoretical approximation ratios. For the extremely small instances (7 to 10 rectangles), we run the three algorithms together for 10000 randomly-generated instances, and calculate their approximation ratios. 
+For small instances, we can use the branch-and-bound algorithm to find the optimal solution. As mentioned at the beginning of section \ref{sssec:branchandbound}, we can choose to generate an initial upper-bound $U$ with a heuristic like FFDH to prune the initial branches the search. For our implementation, the branch-and-bound algorithm would run \textit{both} FFDH and Split-Fit and use the better solution as the upper bound.\\
+\\
+Furthermore, we observed that the running time behind the branch-and-bound algorithm is very dependent on the order in which we sort (and thus, explore) the objects. Leaving the objects in their original, randomized order is almost always worse than working with a set of objects pre-sorted by decreasing height or decreasing width. However, we found the algorithm worked best when the objects are pre-sorted by their areas.\\
+\\
+We believe that this is because the large area of the initial rectangles provides less room for other rectangles to fit in, and thus they can either improve the currently optimal value, or be pruned early by either a \textit{best-solution-so-far} upper bound or the lower bound found by Theorem \ref{thm:kprune}. Thus, we would reach better heights, and thus be able to prune cases, faster.\\
+\\
+For small instances, shortened instances from Zhang et al.'s dataset are used (the complete instances from this dataset are used as large instances in the next section). Table \ref{table:smallinstances} compares the running time of the branch-and-bound algorithm with objects sorted in different orders for various small instances.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline Name & Items & Width & Decreasing Height & Decreasing Width & Decreasing Area \\
+\hline zdf1 & 580 & 100 & 402 & 402 & 1 \\
+\hline zdf2 & 660 & 100 & 428 & 431 & 1\\
+\hline
+\end{tabular}
+\caption{Running time (in seconds) of branch-and-bound algorithm with exploration orders}
+\label{table:smallinstances}
+\end{table}
 
 \subsection{Large instances}
-To test the effectiveness of the FFDH and Split-Fit heuristic algorithms, we run them on large datasets. The dataset used is the ZDF dataset, which is generated by combining zero-waste and nonzero-waste data \cite{zdf}. We find that, even though Split-Fit has a slightly better asymptotic approximation ratio than FFDH, it does worse than FFDH in most of the test cases given Table \ref{table:zdftest}.
+To test the effectiveness of the FFDH and Split-Fit heuristic algorithms, we run them on large datasets. The dataset used is Zhang et al.'s ZDF dataset, which is generated by combining zero-waste and nonzero-waste data \cite{zdf}. We find that, even though Split-Fit has a slightly better asymptotic approximation ratio than FFDH, it does worse than FFDH in most of the test cases given Table \ref{table:zdftest}.
 
 \begin{table}
 \centering
@@ -416,6 +435,9 @@ To test the effectiveness of the FFDH and Split-Fit heuristic algorithms, we run
 \caption{FFDH and Split-Fit's performance on Zhang et al.'s dataset.}
 \label{table:zdftest}
 \end{table}
+
+\section{Conclusion}
+Seth is handsome
 
 \begin{thebibliography}{9}
 \bibitem{harren1}
