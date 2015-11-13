@@ -459,6 +459,7 @@ public class MaxRect {
         if (this.height < attemptPlace.height || this.width < attemptPlace.width) return false;
         // System.out.println("Attempting " + attemptPlace);
         
+        /*
         boolean[] supportTrail = new boolean[n]; // Compute the support trail while checking
         boolean hasLeftSupport = false;
         for (Rect leftSupportRect : leftSupport) {
@@ -471,7 +472,6 @@ public class MaxRect {
         if (!hasLeftSupport) return false;
         
         boolean hasDownSupport = false;
-        Rect leftestDown = null;
         for (Rect downSupportRect : downSupport) {
             if (attemptPlace.touchBottom(downSupportRect)) {
                 // System.out.println(downSupportRect + " " + downSupportRect.id);
@@ -479,7 +479,28 @@ public class MaxRect {
                 buildSupportTrail(supportTrail, downSupportRect);
             }
         }
-        if (!hasDownSupport) return false;
+        if (!hasDownSupport) return false;*/
+        
+        boolean[] supportTrail = new boolean[n];
+        Rect lowestLeft = null;
+        for (Rect leftSupportRect : leftSupport) {
+            if (attemptPlace.touchLeft(leftSupportRect)) {
+                // System.out.println(leftSupportRect + " " + leftSupportRect.id);
+                if (lowestLeft == null || leftSupportRect.y2 < lowestLeft.y2) lowestLeft = leftSupportRect;
+            }
+        }
+        if (lowestLeft == null) return false;
+        buildSupportTrail(supportTrail, lowestLeft);
+        
+        Rect leftestDown = null;
+        for (Rect downSupportRect : downSupport) {
+            if (attemptPlace.touchBottom(downSupportRect)) {
+                // System.out.println(leftSupportRect + " " + leftSupportRect.id);
+                if (leftestDown == null || downSupportRect.y2 < leftestDown.y2) leftestDown = downSupportRect;
+            }
+        }
+        if (leftestDown == null) return false;
+        buildSupportTrail(supportTrail, leftestDown);
         
         // Check for ordering
         for (Rect inPlaceRect : inPlace) {
