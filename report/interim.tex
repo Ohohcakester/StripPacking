@@ -82,8 +82,6 @@ In other words, if all rectangles have width less than or equal to one third of 
 \[
 	SF(L) \leq \frac{3}{2}OPT(L) + 2
 \]
-\section{Implemented algorithms}
-We have implemented the FFDH and SF algorithms with visualisations. The visualisations for our implementations can be seen in Figures \ref{fig:ffdhrun} and \ref{fig:splitfitrun}.\\
 \begin{figure}[ht]
 \centering
 \begin{subfigure}{.35\textwidth}
@@ -98,9 +96,10 @@ We have implemented the FFDH and SF algorithms with visualisations. The visualis
   \caption{Split-Fit Algorithm}
   \label{fig:splitfitrun}
 \end{subfigure}
-  \caption{Visualisation for our implementation of FFDH and SF}
+  \caption{Visualisation of FFDH and SF for the same problem instance. The packing of $L_2$ objects into the Split-Fit rectangle $R$ can be seen in \ref{fig:splitfitrun}.}
   \label{fig:ffdhsfrun}
 \end{figure}
+
 
 \section{Brute Force Algorithm}
 We describe an optimal solution for 2-D Strip Packing. The algorithm is based off the Maximal Rectangles (MAXRECT) algorithm \cite{rectanglebinpack}. We begin with a simple result:
@@ -302,7 +301,7 @@ This makes a total running time of $\displaystyle\sum_{m=0}^{n-1} (\prod_{k=1}^{
 \subsubsection{Branch and Bound}
 The most basic pruning rules are the upper bound and lower bound pruning rules of branch and bound. At all times, we maintain an upper-bound value $U$. We initialise $U$ to a known upper bound (for example, the sum of the heights of the rectangles, or the solution found by a heuristic algorithm like FFDH). Whenever we find a feasible solution of total height less than $U$, we update the value of $U$ to the height of the solution found. Now, at any point of the algorithm, if the current total height of the placement $P$, $height(P) \geq U$, we can prune the current branch.\\
 
-At any point of the algorithm, let $S$ be any subset of the remaining unplaced objects. Suppose that we can find a lower bound $L(S)$ for the minimum-height strip that can pack all of the objects in $S$. Let $h$ be the height of the lowest maximal rectangle that can fit some element in $S$. We can then prune the current branch if $L(S) + h \geq U$.\\
+At any point of the algorithm, let $S$ be any subset of the remaining unplaced objects. Suppose that we can find a lower bound $L(S)$ for the minimum-height strip that can pack all of the objects in $S$. Let $h$ be the height of the lowest maximal rectangle that can fit some element in $S$. We can then prune the current branch if $L(S) + h \geq U$.
 
 % XXXXXXXX GIVE EXAMPLES OF LOWER BOUND
 
@@ -343,19 +342,19 @@ This is also clear as $P$ cannot be constructed in any order other than $f(P)$.
 
 Thus, by properly defining an "ordering function" $f$, we will be able to create a pruning rule that ensures that each packing $P$ is explored no more than once. We thus define a function $f$ in the following manner:\\
 
-Take a tight packing $P$. Let $s_1,s_2,\cdots,s_m$ be the ordering of the $m$ placed objects given by $f(P)$. To define $s_k$, we consider the placement of $s_1,\cdots,s_{k-1}$. Out of all the remaining objects that can be "placed" while maintaining a tight packing, let $s_k$ be the one with minimum $y$. If there are ties, we pick the one with lowest $x$ value. Note that we compare the bottom left corners of the objects. By this construction, we ensure that property 2 will be satisfied by function $f$.\\
+Take a tight packing $P$. Let $s_1,s_2,\cdots,s_m$ be the ordering of the $m$ placed objects given by $f(P)$. To define $s_k$, we consider the placement of $s_1,\cdots,s_{k-1}$. Out of all the remaining objects that can be "placed" while maintaining a tight packing, let $s_k$ be the one with minimum $y$. If there are ties, we pick the one with lowest $x$ value. Note that we compare the bottom left corners of the objects. By this construction, we ensure that property 2 will be satisfied by function $f$.
 
 \subsubsection{Early Discovery of Lower Bounds}
 asd
 
-\subsection{Experimental Results}
+\section{Experimental Results}
+For problems of relatively small size (20 objects and below), our implementation of the branch-and-bound algorithm finds the optimal solution within a reasonable amount of time. For the 20-object case, the branch-and-bound algorithm completes after approximately 20 minutes on a Lenovo ThinkPad x230 running a 2.60 Ghz Intel i5 processor.\footnote{This machine was also used to carry out the rest of the experiments.} For our experiments, we consider cases with less than 20 objects as small instances, and cases with more than 20 rectangles as large instances.
 
+\subsection{Small instances}
+For small instances, we can use the branch-and-bound algorithm to find the optimal solution. Thus, we can determine whether the two approximation algorithms mentioned in section 3 (FFDH and Split-Fit) do as well as their theoretical approximation ratios. For the extremely small instances (7 to 10 rectangles), we run the three algorithms together for 10000 randomly-generated instances, and calculate their approximation ratios. Table 1 shows the result on our 
 
-XXXXXXXXXX
-
-Currently, we are in the process of implementing a Maximal Rectangles-based exhaustive (exponential) algorithm to solve 2-D Bin Packing, based on the idea that when the rectangles in any optimal packing are pushed towards the bottom-left corner of the strip, the packing becomes a solution that can be found by the maximal-rectangles exhaustive search that is no worse than the optimal solution (because we only push rectangles left and downwards).\\\
-\\
-With the use of FFDH and SF, we can then derive upper and lower bounds for the exhaustive search, from which we hope to create a branch-and-bound algorithm to solve 2-D Strip Packing.
+\subsection{Large instances}
+For large instances, we run only FFDH and Split-Fit against large datasets. We have 
 
 \begin{thebibliography}{9}
 \bibitem{harren1}
